@@ -1,0 +1,38 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Prosto+One&display=swap');
+
+@import "tailwindcss";
+
+
+
+@theme {
+  /* COLORS */
+  --color-primary: #E64A19; /* button */
+  --color-border-light: #e1d9cf; /* line */
+  --color-text: #282828; /* text */
+  --color-text-alt: #ffffff; /* AltText */
+  --color-bg-block: #F8F8FF; /* BlockBackground */
+  --color-bg-base: #FAFAFA; /* Background | Logo */
+  --color-border-dark: #290d03; /* dark border */
+
+    /* FONTS */
+    --font-prosto: 'Prosto One';
+    --font-montserrat: 'Montserrat';
+
+    --boxShadow-elevation: '0 1px 3px 1px rgba(0, 0, 0, 0.15)',
+}
+
+body {
+  background-color: var(--color-bg-base);
+    font-family: var(--font-montserrat);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@layer components {
+.title {
+  @apply font-playfair font-prosto text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-text-title;
+}
+}
