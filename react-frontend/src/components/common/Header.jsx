@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { Link } from "react-router-dom"
-import FeatherIcon from "feather-icons-react"
+import PersonIcon from '../../assets/img/Icons/Person.svg'
+import CartIcon from '../../assets/img/Icons/local_mall.svg'
+
+
 
 
 export default function Header() {
@@ -37,19 +40,13 @@ export default function Header() {
 
                 {/* Иконки (десктоп) */}
                 <div className="hidden md:flex items-center space-x-4">
-                    <Link to={`/profile`}>
-                        <FeatherIcon
-                            icon="user"
-                            strokeWidth={2.3}
-                            className="text-text-title w-9 h-auto active:opacity-90 hover:text-primary transition-all duration-100"
-                        />
+                    <Link className="ms-3" to="/account">
+                        <img src={PersonIcon} width={32} height={32} alt="" />
                     </Link>
-                    <Link to={`/cart`}>
-                        <FeatherIcon
-                            icon="shopping-cart"
-                            strokeWidth={2.3}
-                            className="text-text-title w-9 h-auto active:opacity-90 hover:text-primary transition-all duration-300"
-                        />
+
+                    <Link className="ms-3 cart-bucket" to="/cart">
+                        {/* <span>{ getQty() }</span> */}
+                        <img src={CartIcon} width={32} height={32} alt="" />
                     </Link>
                 </div>
 
@@ -103,19 +100,13 @@ export default function Header() {
                 </nav>
 
                 <div className="flex space-x-6 mt-8">
-                    <Link to={`/profile`} onClick={() => setIsMenuOpen(false)}>
-                        <FeatherIcon
-                            icon="user"
-                            strokeWidth={2.3}
-                            className="text-text-title w-7 h-auto hover:text-primary transition-all"
-                        />
+                    <Link className="ms-3" to="/account">
+                        <img src={PersonIcon} width={32} height={32} alt="" />
                     </Link>
-                    <Link to={`/cart`} onClick={() => setIsMenuOpen(false)}>
-                        <FeatherIcon
-                            icon="shopping-cart"
-                            strokeWidth={2.3}
-                            className="text-text-title w-7 h-auto hover:text-primary transition-all"
-                        />
+
+                    <Link className="ms-3 cart-bucket" to="/cart">
+                        {/* <span>{ getQty() }</span> */}
+                        <img src={CartIcon} width={32} height={32} alt="" />
                     </Link>
                 </div>
             </div>
