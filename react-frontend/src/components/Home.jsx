@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import Header from "./common/Header";
 import Hero from "./common/Hero";
 import Advantages from "./common/Advantage";
+import NewArrivals from "./common/NewArrivals";
 
 const Home = () => {
     const location = useLocation();
@@ -38,6 +39,7 @@ const Home = () => {
        <Header />
        <Hero />
        <Advantages />
+       <NewArrivals />
        </>
     )
 }
