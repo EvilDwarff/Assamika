@@ -52,7 +52,7 @@ html {
   }
 
   .btn-primary:hover {
-   @apply opacity-70;
+   @apply bg-[#d13f15];
   }
 
 
