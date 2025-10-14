@@ -6,6 +6,8 @@ import Hero from "./common/Hero";
 import Advantages from "./common/Advantage";
 import NewArrivals from "./common/NewArrivals";
 import NewsLetter from "./common/NewsLetter";
+import Suppliers from "./common/Suppliers";
+import Footer from "./common/Footer";
 
 const Home = () => {
     const location = useLocation();
@@ -42,6 +44,8 @@ const Home = () => {
             <Advantages />
             <NewArrivals />
             <NewsLetter />
+            <Suppliers />
+            <Footer />
         </>
     )
 }
