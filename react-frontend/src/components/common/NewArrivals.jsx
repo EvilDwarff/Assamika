@@ -42,7 +42,7 @@ const NewArrivals = () => {
   ];
 
   return (
-    <div className="container py-12 md:py-20 mx-auto px-2">
+    <div id="news" className="container py-12 md:py-20 mx-auto px-2">
       <h1 className="title text-center mb-6">Новинки</h1>
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
         {products.map((product) => (

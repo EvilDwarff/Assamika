@@ -2,10 +2,10 @@ import { Link } from "react-router-dom"
 
 export default function Footer() {
     const navItems = [
-        { name: 'О НАС', href: '/about' },
+        { name: 'О НАС', href: '/#about' },
         { name: 'КАТАЛОГ', href: '/catalog' },
-        { name: 'НОВИНКИ', href: '/news' },
-        { name: 'ПАРТНЕРАМ', href: '/partners' },
+        { name: 'НОВИНКИ', href: '/#news' },
+        { name: 'ПАРТНЕРАМ', href: '/#partners' },
     ]
 
     return (

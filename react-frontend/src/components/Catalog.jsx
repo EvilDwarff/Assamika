@@ -46,7 +46,7 @@ const CatalogPage = () => {
                         {/* Левая панель — фильтры */}
                         <aside className="w-full lg:w-1/4">
                             {/* Категории */}
-                            <div className="mb-8">
+                            <div className="mb-4">
                                 <button
                                     type="button"
                                     onClick={() => setShowCategories(!showCategories)}

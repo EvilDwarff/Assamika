@@ -10,21 +10,22 @@ export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     const navItems = [
-        { name: 'О НАС', href: '/about' },
+        { name: 'О НАС', href: '/#about' },
         { name: 'КАТАЛОГ', href: '/catalog' },
-        { name: 'НОВИНКИ', href: '/news' },
-        { name: 'ПАРТНЕРАМ', href: '/partners' },
+        { name: 'НОВИНКИ', href: '/#news' },
+        { name: 'ПАРТНЕРАМ', href: '/#partners' },
     ]
 
     return (
         <header className="bg-bg-block fixed top-0 left-0 w-full z-50 shadow-md">
             <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                 {/* Логотип */}
-                <div className="flex items-center space-x-3">
-                    <img src="/logo.svg" alt="Логотип" className="h-10 w-auto" />
-                    <span className="text-xl font-prosto text-text">Ассамика</span>
-                </div>
-
+                <Link to="/">
+                    <div className="flex items-center space-x-3">
+                        <img src="/logo.svg" alt="Логотип" className="h-10 w-auto" />
+                        <span className="text-xl font-prosto text-text">Ассамика</span>
+                    </div>
+                </Link>
                 {/* Меню (десктоп) */}
                 <nav className="hidden md:flex space-x-8">
                     {navItems.map((item) => (
