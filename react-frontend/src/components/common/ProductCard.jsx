@@ -1,8 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 
 const ProductCard = ({ image, title, price, weight, unit = 'кг', className = '' }) => {
+  const navigate = useNavigate();
+
   return (
     <div
+      onClick={() => {
+        navigate('/product')
+      }}
       className={`group bg-bg-block flex flex-col shadow-md text-center p-2 rounded-none transition-transform duration-300 ease-in-out hover:scale-105 ${className}`}
     >
       {/* Фото */}
@@ -31,7 +37,11 @@ const ProductCard = ({ image, title, price, weight, unit = 'кг', className = '
           {/* Круглая кнопка «+» */}
           <button
             aria-label="Добавить в корзину"
-            className="absolute left-1/2 top-1/2 -translate-y-1/2 translate-x-[calc(-50%+55px)] flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white text-xl leading-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-primary-dark focus:outline-none"
+            onClick={(e) => {
+              e.stopPropagation(),
+                alert('ff')
+            }}
+            className="absolute left-1/2 top-1/2 -translate-y-1/2 translate-x-[calc(-50%+60px)] flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white text-xl leading-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-primary-dark focus:outline-none"
           >
             +
           </button>

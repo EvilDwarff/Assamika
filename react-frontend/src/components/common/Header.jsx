@@ -59,7 +59,7 @@ export default function Header() {
                 >
                     <div className="relative w-6 h-6 flex flex-col justify-between items-center">
                         <span
-                            className={`absolute  top-0 left-0 w-full h-[2px] bg-black transition-all duration-300 ease-in-out ${isMenuOpen ? 'rotate-45 top-1/2 -translate-y-1/2' : ''
+                            className={`absolute  top-0 left-0 w-full h-[2px]  bg-black transition-all duration-300 ease-in-out ${isMenuOpen ? 'rotate-45 top-1/2 -translate-y-1/2' : ''
                                 }`}
                         ></span>
                         <span
