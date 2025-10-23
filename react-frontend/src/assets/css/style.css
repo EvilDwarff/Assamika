@@ -19,7 +19,7 @@
   --color-bg-base: #FAFAFA;
   /* Background | Logo */
   --color-border-dark: #290d03;
-  
+
 
   /* FONTS */
   --font-prosto: 'Prosto One';
@@ -44,7 +44,7 @@ html {
 
 
   .btn {
-    @apply font-montserrat inline-block text-lg md:text-xl lg:text-2xl xl:text-2xl rounded-none  font-normal px-6 py-3 md:px-8 md:py-3.5 lg:px-9 lg:py-4 xl:px-12 xl:py-5 transition-all duration-300 ease-in-out;
+    @apply font-montserrat inline-block text-lg md:text-xl lg:text-2xl xl:text-2xl rounded-none font-normal px-6 py-3 md:px-8 md:py-3.5 lg:px-9 lg:py-4 xl:px-12 xl:py-5 transition-all duration-300 ease-in-out;
   }
 
   .btn-primary {
@@ -52,8 +52,40 @@ html {
   }
 
   .btn-primary:hover {
-   @apply bg-[#d13f15];
+    @apply bg-[#d13f15];
   }
 
 
+}
+
+@keyframes slideLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideRight {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slideLeft {
+  animation: slideLeft 0.7s ease-in-out forwards;
+}
+
+.animate-slideRight {
+  animation: slideRight 0.7s ease-in-out forwards;
 }

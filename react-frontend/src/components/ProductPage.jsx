@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./common/Header";
 import Footer from "./common/Footer";
 import Image1 from "../assets/img/products/image1.webp";
@@ -7,13 +7,42 @@ import Image3 from "../assets/img/products/image3.webp";
 import NewArrivals from "./common/NewArrivals";
 
 const ProductPage = () => {
-    const [selectedImage, setSelectedImage] = useState(Image1);
+    /* ----------  SWIPE + AUTO-FLIP  ---------- */
+    const images = [Image1, Image2, Image3];
+    const [idx, setIdx] = useState(0);
+    const [touchStart, setTouchStart] = useState(null);
+    const [direction, setDirection] = useState(""); // "left" | "right"
+
+    /* автоматическое перелистывание каждые 10 000 мс */
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setDirection("left");
+            setIdx((i) => (i + 1) % images.length);
+        }, 10000);
+        return () => clearInterval(timer); // очистка при размонтировании
+    }, [images.length]);
+
+    const onTouchStart = (e) => {
+        const x = e.touches ? e.touches[0].clientX : e.clientX;
+        setTouchStart(x);
+    };
+    const onTouchEnd = (e) => {
+        if (!touchStart) return;
+        const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+        const diff = touchStart - x;
+        if (Math.abs(diff) > 40) {
+            setDirection(diff > 0 ? "left" : "right");
+            diff > 0
+                ? setIdx((i) => (i + 1) % images.length)
+                : setIdx((i) => (i - 1 + images.length) % images.length);
+        }
+        setTouchStart(null);
+    };
+    /* ------------------------------------------ */
+
     const [quantity, setQuantity] = useState(1);
     const [inCart, setInCart] = useState(false);
-
     const [isAnimating, setIsAnimating] = useState(false);
-
-    const images = [Image1, Image2, Image3, Image1];
 
     const increaseQuantity = () => setQuantity((q) => q + 1);
     const decreaseQuantity = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
@@ -35,13 +64,22 @@ const ProductPage = () => {
                     <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
 
                         {/* Левая часть — Слайдер */}
-                        <div className="w-full lg:w-1/2 flex flex-col items-center">
+                        <div className="w-full lg:w-1/2 flex flex-col items-center select-none">
                             {/* Основное изображение */}
-                            <div className="w-full max-w-md aspect-square overflow-hidden rounded-none shadow">
+                            <div
+                                className="w-full max-w-md aspect-square overflow-hidden rounded-none shadow relative"
+                                onTouchStart={onTouchStart}
+                                onTouchEnd={onTouchEnd}
+                                onMouseDown={onTouchStart}
+                                onMouseUp={onTouchEnd}
+                            >
                                 <img
-                                    src={selectedImage}
+                                    key={idx}
+                                    src={images[idx]}
                                     alt="Товар"
-                                    className="w-full h-full object-contain"
+                                    className={`w-full h-full object-contain absolute inset-0 transition-all duration-700 ease-in-out
+                                        ${direction === "left" ? "animate-slideLeft" : "animate-slideRight"}`}
+                                    draggable={false}
                                 />
                             </div>
 
@@ -50,8 +88,11 @@ const ProductPage = () => {
                                 {images.map((img, index) => (
                                     <button
                                         key={index}
-                                        onClick={() => setSelectedImage(img)}
-                                        className={`w-16 h-16 sm:w-20 sm:h-20 border-2 rounded-md overflow-hidden ${selectedImage === img
+                                        onClick={() => {
+                                            setDirection(index > idx ? "left" : "right");
+                                            setIdx(index);
+                                        }}
+                                        className={`w-16 h-16 sm:w-20 sm:h-20 border-2 rounded-md overflow-hidden ${images[idx] === img
                                                 ? "border-orange-600"
                                                 : "border-transparent"
                                             }`}
@@ -77,7 +118,7 @@ const ProductPage = () => {
                                 <p className="font-medium">Вес: 250 гр</p>
                             </div>
 
-                            <div className="text-base sm:text-md mb-8 leading-relaxed max-w-prose">
+                            <div className="text-base text-justify sm:text-md mb-8 leading-relaxed max-w-prose">
                                 <p>
                                     Чёрный байховый листовой чай с выраженным вкусом и ароматом.
                                     Он идеально подходит тем, кто предпочитает пить чай без
@@ -118,7 +159,7 @@ const ProductPage = () => {
                                                 +
                                             </button>
                                         </div>
-                                        <button className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 uppercase text-lg transition-colors">
+                                        <button className="bg-gray-400 text-white px-8 py-3 uppercase text-lg transition-colors">
                                             В корзине
                                         </button>
                                     </div>
@@ -130,6 +171,8 @@ const ProductPage = () => {
             </section>
             <NewArrivals />
             <Footer />
+
+           
         </>
     );
 };

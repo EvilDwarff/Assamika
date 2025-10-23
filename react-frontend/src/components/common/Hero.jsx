@@ -4,8 +4,8 @@ import LandingImage from '../../assets/img/LandinImage.png'
 
 const Hero = () => {
     return (
-        <div id="about" className="container mx-auto px-1 sm:px-0">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 py-20 md:py-40 items-center">
+        <div id="about" className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 py-20 md:py-30 items-center">
                 <div className="col-span-1 lg:col-span-5 flex">
                     <img
                         src={LandingImage}

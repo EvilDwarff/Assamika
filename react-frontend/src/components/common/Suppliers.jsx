@@ -2,8 +2,8 @@ import React from 'react'
 import LandingImage2 from '../../assets/img/LandingImage2.png'
 const Suppliers = () => {
   return (
-     <div id="partners" className="container mx-auto px-1 sm:px-0">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 py-20 md:py-40 items-center">
+     <div id="partners" className="container mx-auto  px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 py-20 md:py-30 items-center">
             
                 <div className="col-span-1 md:col-span-7 flex flex-col items-start gap-6 md:px-0">
                     <div className="col-span-1 md:col-span-7 flex flex-col items-start gap-6 md:px-0 text-center md:text-left">
