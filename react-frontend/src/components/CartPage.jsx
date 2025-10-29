@@ -47,57 +47,67 @@ const CartPage = () => {
       <section className="bg-bg-block pt-24 md:pt-28 pb-12 md:pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
-            
+
             {/* Список товаров */}
             <div className="w-full lg:w-2/3">
-              {cartItems.map((item) => (
-                <div key={item.id} className="pb-6 mb-6 border-b border-gray-200">
-                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-32 h-32 object-contain"
-                    />
+           {cartItems.map((item) => (
+  <div key={item.id} className="py-4 border-b border-gray-200">
+    <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-8">
+      {/* Изображение */}
+      <div className="flex-shrink-0">
+        <img
+          src={item.image}
+          alt={item.title}
+          className="w-28 h-28 sm:w-32 sm:h-32 object-contain"
+        />
+      </div>
 
-                    <div className="flex-1 text-center sm:text-left">
-                      <h3 className="text-lg font-medium text-text">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-500">{item.weight}</p>
+      {/* Текст (вертикально центрирован) */}
+      <div className="flex-1 flex flex-col justify-center text-center sm:text-left">
+        <h3 className="text-lg font-medium text-text leading-snug">
+          {item.title}
+        </h3>
+        <p className="text-gray-500 mt-1">{item.weight}</p>
 
-                      {/* Удалить */}
-                      <button
-                        onClick={() => removeItem(item.id)}
-                        className="text-gray-500 text-sm flex items-center gap-1 mt-2 hover:text-orange-600"
-                      >
-                        <span>🗑</span> Удалить
-                      </button>
-                    </div>
+        <button
+          onClick={() => removeItem(item.id)}
+          className="text-gray-500 text-sm flex items-center gap-2 mt-2 hover:text-orange-600 mx-auto sm:mx-0"
+        >
+          <span aria-hidden>🗑</span>
+          Удалить
+        </button>
+      </div>
 
-                    {/* Кол-во и цена */}
-                    <div className="flex items-center justify-between sm:flex-col sm:items-end sm:justify-center w-full sm:w-auto gap-3">
-                      <div className="flex items-center border border-gray-300">
-                        <button
-                          onClick={() => decreaseQuantity(item.id)}
-                          className="px-3 py-1 text-lg font-bold hover:bg-gray-100"
-                        >
-                          –
-                        </button>
-                        <span className="px-4">{item.quantity}</span>
-                        <button
-                          onClick={() => increaseQuantity(item.id)}
-                          className="px-3 py-1 text-lg font-bold hover:bg-gray-100"
-                        >
-                          +
-                        </button>
-                      </div>
-                      <p className="font-medium text-text">
-                        {item.price * item.quantity} ₽
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+      {/* Правый блок: счётчик (без рамки) и цена */}
+      <div className="flex flex-row sm:flex-col items-center sm:items-end gap-4 sm:gap-2 min-w-[110px]">
+        {/* Счётчик — без внешней рамки, компактный */}
+        <div className="flex items-center bg-transparent rounded-md">
+          <button
+            onClick={() => decreaseQuantity(item.id)}
+            className="px-3 py-1 text-lg font-medium hover:text-orange-600"
+            aria-label="Уменьшить"
+          >
+            –
+          </button>
+          <span className="px-4 text-base">{item.quantity}</span>
+          <button
+            onClick={() => increaseQuantity(item.id)}
+            className="ps-3 py-1 text-lg font-medium hover:text-orange-600"
+            aria-label="Увеличить"
+          >
+            +
+          </button>
+        </div>
+
+        {/* Цена */}
+        <div className="text-base sm:text-lg font-medium text-text">
+          {item.price * item.quantity} ₽
+        </div>
+      </div>
+    </div>
+  </div>
+))}
+
             </div>
 
             {/* Итоговая стоимость */}
