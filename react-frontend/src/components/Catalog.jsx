@@ -3,8 +3,7 @@ import ProductCard from './common/ProductCard';
 import teaImg1 from '../assets/img/products/image1.webp';
 import teaImg2 from '../assets/img/products/image2.webp';
 import teaImg3 from '../assets/img/products/image3.webp';
-import Header from './common/Header';
-import Footer from './common/Footer';
+import Layout from './common/Layout';
 
 const CatalogPage = () => {
     const [selectedCategories, setSelectedCategories] = useState(['Конфеты']);
@@ -37,8 +36,7 @@ const CatalogPage = () => {
     ];
 
     return (
-        <>
-            <Header />
+        <Layout>
             <section className="bg-bg-block pt-24 md:pt-28 lg:pt-32 pb-8 md:pb-16">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Контейнер: фильтры + карточки */}
@@ -132,8 +130,7 @@ const CatalogPage = () => {
                     </div>
                 </div>
             </section>
-            <Footer />
-        </>
+          </Layout>
     );
 };
 

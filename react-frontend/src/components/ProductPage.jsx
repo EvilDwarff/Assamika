@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Header from "./common/Header";
-import Footer from "./common/Footer";
+import Layout from "./common/Layout";
 import Image1 from "../assets/img/products/image1.webp";
 import Image2 from "../assets/img/products/image2.webp";
 import Image3 from "../assets/img/products/image3.webp";
@@ -56,8 +55,7 @@ const ProductPage = () => {
     };
 
     return (
-        <>
-            <Header />
+        <Layout>
             <section className=" pt-24 md:pt-28 pb-12 md:pb-20">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Основной контейнер */}
@@ -170,10 +168,7 @@ const ProductPage = () => {
                 </div>
             </section>
             <NewArrivals />
-            <Footer />
-
-           
-        </>
+       </Layout>
     );
 };
 
