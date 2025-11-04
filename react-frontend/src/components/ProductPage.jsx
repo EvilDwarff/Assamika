@@ -65,7 +65,7 @@ const ProductPage = () => {
                         <div className="w-full lg:w-1/2 flex flex-col items-center select-none">
                             {/* Основное изображение */}
                             <div
-                                className="w-full max-w-md aspect-square overflow-hidden rounded-none shadow relative"
+                                className="w-full max-w-md aspect-square overflow-hidden bg-bg-base rounded-none shadow relative"
                                 onTouchStart={onTouchStart}
                                 onTouchEnd={onTouchEnd}
                                 onMouseDown={onTouchStart}
@@ -111,7 +111,7 @@ const ProductPage = () => {
                                 Чай чёрный "NAYRYZ" гранулированный
                             </h1>
 
-                            <div className="flex flex-wrap items-center gap-6 mb-6 text-[28px] md:text-[32px] lg:text-[36px] text-lg">
+                            <div className="flex flex-wrap items-center gap-6 mb-6 text-[28px] md:text-[32px]  text-lg">
                                 <p className="font-medium">227 ₽</p>
                                 <p className="font-medium">Вес: 250 гр</p>
                             </div>

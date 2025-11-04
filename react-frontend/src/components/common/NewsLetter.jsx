@@ -11,7 +11,7 @@ const NewsLetter = () => {
                     </h2>
 
                     {/* Форма */}
-                    <form className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto max-w-md md:max-w-xl">
+                    <form className="flex flex-col bg-bg-base sm:flex-row items-center gap-4 w-full sm:w-auto max-w-md md:max-w-xl">
                         <input
                             type="email"
                             placeholder="Email"

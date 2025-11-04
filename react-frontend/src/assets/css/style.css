@@ -39,7 +39,7 @@ html {
 
 @layer components {
   .title {
-    @apply font-prosto text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-text;
+    @apply font-prosto text-2xl md:text-3xl lg:text-4xl xl:text-4xl text-text;
   }
 
 

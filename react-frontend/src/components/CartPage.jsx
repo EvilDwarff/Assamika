@@ -42,7 +42,7 @@ const CartPage = () => {
 
   return (
     <Layout>
-      <section className="bg-bg-block pt-24 md:pt-28 pb-12 md:pb-20">
+      <section className="bg-bg-base pt-24 md:pt-28 pb-12 md:pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
 
@@ -109,7 +109,7 @@ const CartPage = () => {
             </div>
 
             {/* Итоговая стоимость */}
-            <aside className="w-full lg:w-1/3 bg-block shadow-md p-6">
+            <aside className="w-full lg:w-1/3 bg-bg-block shadow-md p-6">
               <h3 className="text-xl font-medium text-text mb-4">
                 Стоимость заказа
               </h3>

@@ -16,52 +16,84 @@ const Login = () => {
     } = useForm();
 
     const navigate = useNavigate();
-  const onSubmit = async (data) => {
-  try {
-    // 1️⃣ Получаем CSRF cookie
-    await fetch('http://localhost:8000/sanctum/csrf-cookie', {
-      credentials: 'include',
-    });
+//   const onSubmit = async (data) => {
+//   try {
+//     // 1️⃣ Получаем CSRF cookie
+//     await fetch('http://localhost:8000/sanctum/csrf-cookie', {
+//       credentials: 'include',
+//     });
 
-    // 2️⃣ Извлекаем токен из cookie
-    const csrfToken = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('XSRF-TOKEN='))
-      ?.split('=')[1];
+//     // 2️⃣ Извлекаем токен из cookie
+//     const csrfToken = document.cookie
+//       .split('; ')
+//       .find(row => row.startsWith('XSRF-TOKEN='))
+//       ?.split('=')[1];
 
 
-    const response = await fetch(`${apiUrl}/admin/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-XSRF-TOKEN': decodeURIComponent(csrfToken), // важно: декодировать
-      },
-      credentials: 'include',
-      body: JSON.stringify(data),
-    });
+//     const response = await fetch(`${apiUrl}/admin/login`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'X-XSRF-TOKEN': decodeURIComponent(csrfToken), // важно: декодировать
+//       },
+//       credentials: 'include',
+//       body: JSON.stringify(data),
+//     });
 
-    const result = await response.json();
-    console.log(result);
+//     const result = await response.json();
+//     console.log(result);
 
-    if (result.status === 200) {
-      const adminInfo = {
-        token: result.token,
-        id: result.id,
-        name: result.name,
-      };
-      localStorage.setItem('adminInfo', JSON.stringify(adminInfo));
-      login(adminInfo);
-      navigate('/admin/dashboard');
-    } else {
-      toast.error(result.message);
+//     if (result.status === 200) {
+//       const adminInfo = {
+//         token: result.token,
+//         id: result.id,
+//         name: result.name,
+//       };
+//       localStorage.setItem('adminInfo', JSON.stringify(adminInfo));
+//       login(adminInfo);
+//       navigate('/admin/dashboard');
+//     } else {
+//       toast.error(result.message);
+//     }
+//   } catch (error) {
+//     console.error('Ошибка входа:', error);
+//     toast.error('Ошибка при входе в систему');
+//   }
+// };
+
+const onSubmit = async (data) => {
+        console.log(data);
+
+        const res = await fetch(`${apiUrl}/admin/login`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+
+            body: JSON.stringify(data)
+
+        }).then(res => res.json())
+            .then(result => {
+                console.log(result)
+
+                if (result.status == 200) {
+                    const adminInfo = {
+                        token: result.token, 
+                        id: result.id,
+                        name: result.name
+                    }
+                    localStorage.setItem('adminInfo', JSON.stringify(adminInfo))
+
+
+
+                    login(adminInfo)
+                    navigate('/admin/dashboard')
+                } else {
+
+                    toast.error(result.message);
+                }
+            })
     }
-  } catch (error) {
-    console.error('Ошибка входа:', error);
-    toast.error('Ошибка при входе в систему');
-  }
-};
-
-
     return (
         <Layout>
             <div className="max-w-md mx-auto py-10 mt-20">
