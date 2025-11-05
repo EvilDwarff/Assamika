@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 import React, { useContext } from 'react';
 import Layout from '../common/Layout';
 import { useForm } from 'react-hook-form';
@@ -16,54 +16,8 @@ const Login = () => {
     } = useForm();
 
     const navigate = useNavigate();
-//   const onSubmit = async (data) => {
-//   try {
-//     // 1️⃣ Получаем CSRF cookie
-//     await fetch('http://localhost:8000/sanctum/csrf-cookie', {
-//       credentials: 'include',
-//     });
 
-//     // 2️⃣ Извлекаем токен из cookie
-//     const csrfToken = document.cookie
-//       .split('; ')
-//       .find(row => row.startsWith('XSRF-TOKEN='))
-//       ?.split('=')[1];
-
-
-//     const response = await fetch(`${apiUrl}/admin/login`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'X-XSRF-TOKEN': decodeURIComponent(csrfToken), // важно: декодировать
-//       },
-//       credentials: 'include',
-//       body: JSON.stringify(data),
-//     });
-
-//     const result = await response.json();
-//     console.log(result);
-
-//     if (result.status === 200) {
-//       const adminInfo = {
-//         token: result.token,
-//         id: result.id,
-//         name: result.name,
-//       };
-//       localStorage.setItem('adminInfo', JSON.stringify(adminInfo));
-//       login(adminInfo);
-//       navigate('/admin/dashboard');
-//     } else {
-//       toast.error(result.message);
-//     }
-//   } catch (error) {
-//     console.error('Ошибка входа:', error);
-//     toast.error('Ошибка при входе в систему');
-//   }
-// };
-
-const onSubmit = async (data) => {
-        console.log(data);
-
+    const onSubmit = async (data) => {
         const res = await fetch(`${apiUrl}/admin/login`, {
             method: 'POST',
             headers: {
@@ -74,11 +28,9 @@ const onSubmit = async (data) => {
 
         }).then(res => res.json())
             .then(result => {
-                console.log(result)
-
                 if (result.status == 200) {
                     const adminInfo = {
-                        token: result.token, 
+                        token: result.token,
                         id: result.id,
                         name: result.name
                     }
@@ -100,7 +52,7 @@ const onSubmit = async (data) => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="bg-white shadow-xl rounded-lg overflow-hidden w-full">
                         <div className="p-8">
-                            <h3 className="text-2xl font-bold mb-6 text-gray-800">
+                            <h3 className="text-2xl font-prosto mb-6 text-text">
                                 Вход для Администратора
                             </h3>
 
@@ -118,7 +70,7 @@ const onSubmit = async (data) => {
                                         },
                                     })}
                                     type="text"
-                                    className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.email ? 'border-red-500' : 'border-gray-300'
+                                    className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-orange-500 ${errors.email ? 'border-red-500' : 'border-gray-300'
                                         }`}
                                     placeholder="Email"
                                 />
@@ -137,7 +89,7 @@ const onSubmit = async (data) => {
                                         required: 'Поле Пароль обязательно для заполнения',
                                     })}
                                     type="password"
-                                    className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.password ? 'border-red-500' : 'border-gray-300'
+                                    className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-orange-500 ${errors.password ? 'border-red-500' : 'border-gray-300'
                                         }`}
                                     placeholder="Пароль"
                                 />
@@ -148,7 +100,7 @@ const onSubmit = async (data) => {
 
                             <button
                                 type="submit"
-                                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+                                className="w-full btn btn-primary"
                             >
                                 Войти
                             </button>

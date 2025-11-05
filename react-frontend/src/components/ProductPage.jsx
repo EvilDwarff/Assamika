@@ -56,7 +56,7 @@ const ProductPage = () => {
 
     return (
         <Layout>
-            <section className=" pt-24 md:pt-28 pb-12 md:pb-20">
+            <section className=" pt-4 md:pt-8 pb-12 md:pb-20">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Основной контейнер */}
                     <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
@@ -111,7 +111,7 @@ const ProductPage = () => {
                                 Чай чёрный "NAYRYZ" гранулированный
                             </h1>
 
-                            <div className="flex flex-wrap items-center gap-6 mb-6 text-[28px] md:text-[32px]  text-lg">
+                            <div className="flex flex-wrap items-center gap-6 mb-6 text-lg md:text-[32px]  ">
                                 <p className="font-medium">227 ₽</p>
                                 <p className="font-medium">Вес: 250 гр</p>
                             </div>

@@ -1,14 +1,13 @@
 
 import React, { useContext } from 'react'
 import { AdminAuthContext } from '../context/AdminAuth'
+import AdminLayout from '@components/admin/common/AdminLayout';
 
 const Dashboard = () => {
-    const { logout } = useContext(AdminAuthContext);
   return (
-    <>
-    <div>Dashboard</div>
-    <a href="#" onClick={logout}>Logout</a>
-    </>
+    <AdminLayout>
+      <div>Dashboard</div>
+    </AdminLayout>
   )
 }
 

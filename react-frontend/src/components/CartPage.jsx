@@ -42,7 +42,7 @@ const CartPage = () => {
 
   return (
     <Layout>
-      <section className="bg-bg-base pt-24 md:pt-28 pb-12 md:pb-20">
+      <section className="bg-bg-base pt-4 md:pt-8 pb-12 md:pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
 

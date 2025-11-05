@@ -1,32 +1,27 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link } from "react-router-dom"
-import PersonIcon from '../../assets/img/Icons/Person.svg'
-import CartIcon from '../../assets/img/Icons/local_mall.svg'
+import { AdminAuthContext } from '../../context/AdminAuth';
 
 
-
-
-export default function Header() {
+export default function AdminHeader() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const { logout } = useContext(AdminAuthContext);
 
     const navItems = [
-        { name: 'О НАС', href: '/#about' },
-        { name: 'КАТАЛОГ', href: '/catalog' },
-        { name: 'НОВИНКИ', href: '/#news' },
-        { name: 'ПАРТНЕРАМ', href: '/#partners' },
+        { name: 'КАТЕГОРИИ', href: '/admin/categories' },
+        { name: 'ТОВАРЫ', href: '/admin/products' },
+        { name: 'ЗАКАЗЫ', href: '/admin/orders' },
+        { name: 'ПОЛЬЗОВАТЕЛИ', href: '/admin/users' },
     ]
 
     return (
         <header className="bg-bg-block sticky top-0 left-0 w-full z-50 shadow-md">
             <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                {/* Логотип */}
                 <Link to="/">
                     <div className="flex items-center space-x-3">
-                        <img src="/logo.svg" alt="Логотип" className="h-10 w-auto" />
-                        <span className="text-xl font-prosto text-text">Ассамика</span>
+                        <span className="text-xl font-prosto text-text">ADMIN</span>
                     </div>
                 </Link>
-                {/* Меню (десктоп) */}
                 <nav className="hidden md:flex space-x-8">
                     {navItems.map((item) => (
                         <a
@@ -39,19 +34,12 @@ export default function Header() {
                     ))}
                 </nav>
 
-                {/* Иконки (десктоп) */}
-                <div className="hidden md:flex items-center space-x-4">
-                    <Link className="ms-3" to="/account">
-                        <img src={PersonIcon} width={32} height={32} alt="" />
-                    </Link>
-
-                    <Link className="ms-3 cart-bucket" to="/cart">
-                        {/* <span>{ getQty() }</span> */}
-                        <img src={CartIcon} width={32} height={32} alt="" />
-                    </Link>
+                <div className="hidden md:flex">
+                <button onClick={(() => logout())} className="btn btn-primary">
+                    Выйти
+                </button>
                 </div>
 
-                {/* Кнопка бургера (мобильная версия) */}
                 <button
                     className="md:hidden flex items-center justify-center w-8 h-8 focus:outline-none z-53 relative"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -74,14 +62,12 @@ export default function Header() {
                 </button>
             </div>
 
-            {/* Затемнение фона */}
             <div
                 className={`fixed inset-0 bg-black/40 transition-opacity duration-300 z-51 md:hidden ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
                     }`}
                 onClick={() => setIsMenuOpen(false)}
             ></div>
 
-            {/* Мобильное меню (слева) */}
             <div
                 className={`fixed top-0 left-0 h-full w-64 bg-bg-base border-r border-gray-200 p-6 transform transition-transform duration-300 md:hidden z-52 ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}
@@ -100,16 +86,9 @@ export default function Header() {
                     ))}
                 </nav>
 
-                <div className="flex space-x-6 mt-8">
-                    <Link className="ms-3" to="/account">
-                        <img src={PersonIcon} width={32} height={32} alt="" />
-                    </Link>
-
-                    <Link className="ms-3 cart-bucket" to="/cart">
-                        {/* <span>{ getQty() }</span> */}
-                        <img src={CartIcon} width={32} height={32} alt="" />
-                    </Link>
-                </div>
+                <button onClick={(() => logout())} className="btn btn-primary mt-2">
+                    Выйти
+                </button>
             </div>
         </header>
     )
