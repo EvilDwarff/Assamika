@@ -9,7 +9,7 @@ use App\Models\Category;
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the categories.
+     * Отобразить список всех категорий.
      */
     public function index()
     {
@@ -17,33 +17,34 @@ class CategoryController extends Controller
 
         return response()->json([
             'data' => $categories,
+            'message' => 'Список категорий загружен',
             'status' => 200
         ], 200);
     }
 
     /**
-     * Store a newly created category in storage.
+     * Создать новую категорию.
      */
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories',
-            'status' => 'sometimes|integer|in:0,1' // опционально, по умолчанию 1
+            'status' => 'sometimes|integer|in:0,1'
         ]);
 
-        // Устанавливаем статус по умолчанию, если не передан
         $validated['status'] = $validated['status'] ?? 1;
 
         $category = Category::create($validated);
 
         return response()->json([
             'data' => $category,
+            'message' => 'Категория успешно создана',
             'status' => 201
         ], 201);
     }
 
     /**
-     * Display the specified category.
+     * Показать конкретную категорию.
      */
     public function show($id)
     {
@@ -51,12 +52,13 @@ class CategoryController extends Controller
 
         return response()->json([
             'data' => $category,
+            'message' => 'Категория найдена',
             'status' => 200
         ], 200);
     }
 
     /**
-     * Update the specified category in storage.
+     * Обновить категорию.
      */
     public function update(Request $request, $id)
     {
@@ -71,12 +73,13 @@ class CategoryController extends Controller
 
         return response()->json([
             'data' => $category,
+            'message' => 'Категория успешно обновлена',
             'status' => 200
         ], 200);
     }
 
     /**
-     * Remove the specified category from storage.
+     * Удалить категорию.
      */
     public function destroy($id)
     {
@@ -84,7 +87,8 @@ class CategoryController extends Controller
         $category->delete();
 
         return response()->json([
-            'message' => 'Category deleted successfully',
+            'data' => null,
+            'message' => 'Категория успешно удалена',
             'status' => 200
         ], 200);
     }

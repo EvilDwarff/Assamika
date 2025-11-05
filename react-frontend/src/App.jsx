@@ -9,6 +9,9 @@ const Login = lazy(() => import("@components/admin/Login"));
 const Dashboard = lazy(() => import("@components/admin/Dashboard"));
 import { ToastContainer } from 'react-toastify';
 import { AdminRequireAuth } from '@components/admin/AdminRequireAuth';
+const ShowCategories = lazy(() => import("@components/admin/categories/Show"));
+const CreateCategory = lazy(() => import("@components/admin/categories/Create"));
+const EditCategory = lazy(() => import("@components/admin/categories/Edit"));
 
 function App() {
 
@@ -23,12 +26,12 @@ function App() {
   };
   return (
     <>
-    
+
 
       <BrowserRouter>
-      <ScrollToTop />
+        <ScrollToTop />
         <Routes>
-          
+
           <Route path='/' element={<Home />} />
           <Route path='/catalog' element={<CatalogPage />} />
           <Route path='/product' element={<ProductPage />} />
@@ -56,8 +59,48 @@ function App() {
                   <Dashboard />
                 </Suspense>
               </AdminRequireAuth>
+
             }
           />
+
+          <Route path='/admin/categories' element={
+            <AdminRequireAuth>
+              <Suspense
+                fallback={
+                  <div className="sm:my-10 lg:my-20">
+                    Загрузка...
+                  </div>
+                }>
+                <ShowCategories />
+              </Suspense>
+            </AdminRequireAuth>
+          } />
+
+          <Route path='/admin/categories/create' element={
+            <AdminRequireAuth>
+              <Suspense
+                fallback={
+                  <div className="sm:my-10 lg:my-20">
+                    Загрузка...
+                  </div>
+                }>
+                <CreateCategory />
+              </Suspense>
+            </AdminRequireAuth>
+          } />
+
+          <Route path='/admin/categories/edit/:id' element={
+            <AdminRequireAuth>
+              <Suspense
+                fallback={
+                  <div className="sm:my-10 lg:my-20">
+                    Загрузка...
+                  </div>
+                }>
+                <EditCategory />
+              </Suspense>
+            </AdminRequireAuth>
+          } />
 
         </Routes>
       </BrowserRouter>

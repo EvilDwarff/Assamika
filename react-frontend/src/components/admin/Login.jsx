@@ -48,7 +48,7 @@ const Login = () => {
     }
     return (
         <Layout>
-            <div className="max-w-md mx-auto py-10 mt-20">
+            <div className="max-w-md mx-auto py-10">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="bg-white shadow-xl rounded-lg overflow-hidden w-full">
                         <div className="p-8">
