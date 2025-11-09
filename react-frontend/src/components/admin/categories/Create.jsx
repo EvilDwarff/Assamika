@@ -43,6 +43,7 @@ const CreateCategory = () => {
       }
 
       navigate('/admin/categories');
+    // eslint-disable-next-line no-unused-vars
     } catch (err) {
       setErrors({ global: 'Ошибка соединения с сервером' });
     }

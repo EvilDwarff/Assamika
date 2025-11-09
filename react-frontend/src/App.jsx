@@ -9,6 +9,10 @@ const Login = lazy(() => import("@components/admin/Login"));
 const Dashboard = lazy(() => import("@components/admin/Dashboard"));
 import { ToastContainer } from 'react-toastify';
 import { AdminRequireAuth } from '@components/admin/AdminRequireAuth';
+import LoginUser from './components/LoginUser';
+import RegisterUser from './components/RegisterUser';
+import { RequireAuth } from './components/RequireAuth';
+import Profile from './components/Profile';
 const ShowCategories = lazy(() => import("@components/admin/categories/Show"));
 const CreateCategory = lazy(() => import("@components/admin/categories/Create"));
 const EditCategory = lazy(() => import("@components/admin/categories/Edit"));
@@ -37,8 +41,14 @@ function App() {
           <Route path='/product' element={<ProductPage />} />
           <Route path='/cart' element={<CartPage />} />
           <Route path='/admin/login' element={<Login />} />
+          <Route path='/account/login' element={<LoginUser />} />
+          <Route path='/account/register' element={<RegisterUser />} />
 
-
+          <Route path='/account' element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          } />
 
 
 
