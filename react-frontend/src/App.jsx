@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import Home from '@components/Home';
 import CatalogPage from '@components/Catalog';
+import CheckoutPage from '@components/CheckoutPage';
 import ProductPage from '@components/ProductPage';
 import CartPage from '@components/CartPage';
 const Login = lazy(() => import("@components/admin/Login"));
@@ -40,6 +41,7 @@ function App() {
           <Route path='/catalog' element={<CatalogPage />} />
           <Route path='/product' element={<ProductPage />} />
           <Route path='/cart' element={<CartPage />} />
+          <Route path='/checkout' element={<CheckoutPage />} />
           <Route path='/admin/login' element={<Login />} />
           <Route path='/account/login' element={<LoginUser />} />
           <Route path='/account/register' element={<RegisterUser />} />
