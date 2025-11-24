@@ -69,13 +69,13 @@ const Profile = () => {
 
   return (
     <Layout>
-      <div className="bg-[#f7f6f3] min-h-screen py-16 px-4 sm:px-8 md:px-16">
+      <div className=" py-16 px-4 sm:px-8 md:px-16">
         {loading && <Loader />}
         {!loading && (
           <div className="max-w-4xl mx-auto">
-            
-            {/* 🔹 Заголовок и меню всегда в одной строке */}
-            <div className="flex items-center justify-between mb-10 flex-nowrap gap-2">
+
+            {/* Header */}
+            <div className="flex items-center justify-between mb-10 gap-2">
               <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800 truncate">
                 Личный кабинет
               </h1>
@@ -98,7 +98,7 @@ const Profile = () => {
                       Личный кабинет
                     </Link>
                     <Link
-                      to="/account/orders"
+                      to="/orders"
                       className="block px-4 py-2 hover:bg-gray-100"
                       onClick={() => setMenuOpen(false)}
                     >
@@ -115,20 +115,26 @@ const Profile = () => {
               </div>
             </div>
 
-            {/* Форма профиля */}
+            {/* Form */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+              {/* Имя */}
               <div>
                 <label className="block text-gray-700 mb-2">Имя</label>
                 <input
                   {...register('name', { required: 'Введите имя' })}
                   type="text"
-                  className={`w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-orange-500 ${errors.name ? 'border-red-500' : ''}`}
+                  className={`shadow appearance-none border w-full py-2 px-3 bg-white leading-tight
+                  text-[var(--color-text)] border-gray-300 focus:outline-none
+                  focus:ring-2 focus:ring-[var(--color-primary)]
+                  ${errors.name ? 'border-red-500 focus:ring-red-500' : ''}`}
                 />
                 {errors.name && (
                   <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
                 )}
               </div>
 
+              {/* Почта */}
               <div>
                 <label className="block text-gray-700 mb-2">Почта</label>
                 <input
@@ -140,38 +146,51 @@ const Profile = () => {
                     }
                   })}
                   type="email"
-                  className={`w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-orange-500 ${errors.email ? 'border-red-500' : ''}`}
+                  className={`shadow appearance-none border w-full py-2 px-3 bg-white leading-tight
+                  text-[var(--color-text)] border-gray-300 focus:outline-none
+                  focus:ring-2 focus:ring-[var(--color-primary)]
+                  ${errors.email ? 'border-red-500 focus:ring-red-500' : ''}`}
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
                 )}
               </div>
 
+              {/* Адрес */}
               <div>
                 <label className="block text-gray-700 mb-2">Адрес</label>
                 <input
                   {...register('address', { required: 'Введите адрес' })}
                   type="text"
-                  className={`w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-orange-500 ${errors.address ? 'border-red-500' : ''}`}
+                  className={`shadow appearance-none border w-full py-2 px-3 bg-white leading-tight
+                  text-[var(--color-text)] border-gray-300 focus:outline-none
+                  focus:ring-2 focus:ring-[var(--color-primary)]
+                  ${errors.address ? 'border-red-500 focus:ring-red-500' : ''}`}
                 />
                 {errors.address && (
                   <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>
                 )}
               </div>
 
+              {/* Телефон */}
               <div>
                 <label className="block text-gray-700 mb-2">Телефон</label>
                 <input
                   {...register('mobile', { required: 'Введите телефон' })}
                   type="text"
-                  className={`w-full border border-gray-300 rounded p-2 focus:outline-none focus:border-orange-500 ${errors.mobile ? 'border-red-500' : ''}`}
+                  className={`shadow appearance-none border w-full py-2 px-3 bg-white leading-tight
+                  text-[var(--color-text)] border-gray-300 focus:outline-none
+                  focus:ring-2 focus:ring-[var(--color-primary)]
+                  ${errors.mobile ? 'border-red-500 focus:ring-red-500' : ''}`}
                 />
                 {errors.mobile && (
                   <p className="text-red-500 text-sm mt-1">{errors.mobile.message}</p>
                 )}
               </div>
+
             </div>
 
+            {/* Buttons */}
             <div className="mt-8 flex items-center justify-start gap-4">
               <button
                 onClick={handleSubmit(updateAccount)}
@@ -180,6 +199,7 @@ const Profile = () => {
                 ОБНОВИТЬ
               </button>
             </div>
+
           </div>
         )}
       </div>

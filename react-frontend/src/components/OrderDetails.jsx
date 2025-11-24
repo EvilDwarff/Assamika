@@ -1,0 +1,151 @@
+import React from "react";
+import Layout from "./common/Layout";
+import ProductImg from "../assets/img/products/image1.webp";
+
+const mockOrder = {
+    id: 1,
+    date: "25.08.25",
+    status: "В пути",
+    address: "Москва, ул. Пушкина д. 10, кв. 5",
+    email: "test@email.com",
+    shipping: 100,
+    items: [
+        { id: 1, title: 'Чай "Assam"', weight: "1 кг", price: 968, quantity: 1, image: ProductImg },
+        { id: 2, title: 'Чай "Assam"', weight: "1 кг", price: 968, quantity: 1, image: ProductImg },
+        { id: 3, title: 'Чай "Assam"', weight: "1 кг", price: 968, quantity: 1, image: ProductImg }
+    ]
+};
+
+// 🔹 ТОТ ЖЕ КОМПОНЕНТ, ЧТО И В CHECKOUT
+const OrderItem = ({ item }) => (
+    <div className="flex items-start gap-4 py-4 border-b border-[var(--color-border-light)]">
+        {/* Изображение */}
+        <div className="flex-shrink-0">
+            <img
+                src={item.image}
+                alt={item.title}
+                className="w-20 h-20 object-contain"
+            />
+        </div>
+
+        {/* Информация о товаре */}
+        <div className="flex-1 flex flex-col justify-center">
+            <p className="text-base text-[var(--color-text)] leading-snug">
+                {item.title}
+            </p>
+            <p className="text-sm text-gray-500 mt-0.5">{item.weight}</p>
+        </div>
+
+        {/* Количество и Цена */}
+        <div className="flex flex-col items-end text-right min-w-[100px]">
+            <div className="text-base text-gray-600 mb-1">
+                Кол-во: {item.quantity}
+            </div>
+            <div className="text-base font-medium text-[var(--color-text)]">
+                {item.price * item.quantity} ₽
+            </div>
+        </div>
+    </div>
+);
+
+const OrderDetails = () => {
+    const subtotal = mockOrder.items.reduce(
+        (s, i) => s + i.price * i.quantity,
+        0
+    );
+    const total = subtotal + mockOrder.shipping;
+
+    return (
+        <Layout>
+            <section className="pb-20 pt-5 bg-[var(--color-bg-base)]">
+                <div className="container mx-auto px-4">
+
+                    {/* Header */}
+                    <div className="flex justify-between items-center mb-8">
+                        <h1 className="title">Детали заказа №{mockOrder.id}</h1>
+
+                        <button
+                            onClick={() => window.history.back()}
+                            className="btn btn-primary hidden md:block uppercase"
+                        >
+                            НАЗАД
+                        </button>
+
+                        <button
+                            onClick={() => window.history.back()}
+                            className="md:hidden text-[var(--color-text)]"
+                        >
+                            ← Назад
+                        </button>
+                    </div>
+
+                    {/* Info */}
+                    <div className="grid md:grid-cols-4 gap-6 mb-10 text-[var(--color-text)]">
+
+                        <div className="flex flex-col">
+                            <span className="text-sm text-text font-bold mb-1">Дата</span>
+                            <span className="text-base font-medium">{mockOrder.date}</span>
+                        </div>
+
+                        <div className="flex flex-col">
+                            <span className="text-sm text-text font-bold mb-1">Статус</span>
+                            <span className="text-base font-medium">{mockOrder.status}</span>
+                        </div>
+
+                        <div className="flex flex-col">
+                            <span className="text-sm text-text font-bold mb-1">Адрес доставки</span>
+                            <span className="text-base font-medium">{mockOrder.address}</span>
+                        </div>
+
+                        <div className="flex flex-col">
+                            <span className="text-sm text-text font-bold mb-1">Контакты</span>
+                            <span className="text-base font-medium">{mockOrder.email}</span>
+                        </div>
+
+                    </div>
+
+                    {/* Body */}
+                    <div className="flex flex-col lg:flex-row gap-10">
+
+                        {/* Products */}
+                        <div className="flex-1">
+                            <h2 className="text-xl text-[var(--color-text)] mb-3">Товары</h2>
+
+                            {/* 🔹 ТЕ ЖЕ ОБЁРТКИ, ЧТО И В CHECKOUT */}
+                            <div className="divide-y divide-[var(--color-border-light)]">
+                                {mockOrder.items.map((item) => (
+                                    <OrderItem key={item.id} item={item} />
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Summary */}
+                        <aside className="w-full lg:w-1/3 bg-[var(--color-bg-block)] p-6 h-fit">
+                            <h3 className="text-xl font-semibold mb-4">Стоимость заказа</h3>
+
+                            <div className="space-y-2 text-[var(--color-text)]">
+                                <div className="flex justify-between">
+                                    <span>Заказ</span>
+                                    <span>{subtotal} ₽</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span>Доставка</span>
+                                    <span>{mockOrder.shipping} ₽</span>
+                                </div>
+
+                                <hr className="my-3 border-[var(--color-border-light)]" />
+
+                                <div className="flex justify-between font-bold text-lg">
+                                    <span>Всего:</span>
+                                    <span>{total} ₽</span>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </section>
+        </Layout>
+    );
+};
+
+export default OrderDetails;

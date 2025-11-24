@@ -95,12 +95,7 @@ export default function Footer() {
                     </div>
                 </div>
 
-                {/* Нижняя часть */}
-                <div className="border-t border-gray-200 mt-6 pt-4 text-center">
-                    <p className="text-gray-500 text-sm">
-                        © {new Date().getFullYear()} Ассамика. Все права защищены.
-                    </p>
-                </div>
+             
             </div>
         </footer>
     )

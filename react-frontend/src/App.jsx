@@ -14,6 +14,8 @@ import LoginUser from './components/LoginUser';
 import RegisterUser from './components/RegisterUser';
 import { RequireAuth } from './components/RequireAuth';
 import Profile from './components/Profile';
+import OrderDetails from './components/OrderDetails';
+import OrdersHistory from './components/OrdersHistory';
 const ShowCategories = lazy(() => import("@components/admin/categories/Show"));
 const CreateCategory = lazy(() => import("@components/admin/categories/Create"));
 const EditCategory = lazy(() => import("@components/admin/categories/Edit"));
@@ -53,7 +55,18 @@ function App() {
           } />
 
 
+          <Route path='/orders' element={
+            <RequireAuth>
+              <OrdersHistory />
+            </RequireAuth>
+          } />
 
+
+          <Route path='/orders/:id' element={
+            <RequireAuth>
+              <OrderDetails />
+            </RequireAuth>
+          } />
 
 
           {/* Admin Routs */}

@@ -125,7 +125,7 @@ const CheckoutPage = () => {
           
           {/* Заголовок и кнопка "Назад" */}
           <div className="flex justify-between items-center mb-6 md:mb-10">
-            <h1 className="text-2xl md:text-3xl font-normal text-[var(--color-text)]">
+            <h1 className="title">
               Подтверждение заказа
             </h1>
             <button
