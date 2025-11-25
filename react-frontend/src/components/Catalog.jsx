@@ -37,7 +37,7 @@ const CatalogPage = () => {
 
     return (
         <Layout>
-            <section className="bg-bg-block pt-4 md:pt-8 lg:pt-12 pb-8 md:pb-16">
+            <section className="pt-4 md:pt-8 lg:pt-12 pb-8 md:pb-16">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Контейнер: фильтры + карточки */}
                     <div className="flex flex-col lg:flex-row gap-10">

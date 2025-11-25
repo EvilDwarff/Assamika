@@ -4,7 +4,7 @@ import LandingImage from '../../assets/img/LandinImage.png'
 
 const Hero = () => {
     return (
-        <div id="about" className="container mx-auto">
+        <div id="about" className="container mx-auto px-2">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 py-4 md:py-10 items-center">
                 <div className="col-span-1 lg:col-span-5 flex">
                     <img
