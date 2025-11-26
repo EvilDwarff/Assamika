@@ -11,15 +11,21 @@ const ProductPage = () => {
     const [idx, setIdx] = useState(0);
     const [touchStart, setTouchStart] = useState(null);
     const [direction, setDirection] = useState(""); // "left" | "right"
+    const [autoPlay, setAutoPlay] = useState(true);
+
 
     /* автоматическое перелистывание каждые 10 000 мс */
     useEffect(() => {
+        if (!autoPlay) return; // если отключено — не запускаем таймер
+
         const timer = setInterval(() => {
             setDirection("left");
             setIdx((i) => (i + 1) % images.length);
         }, 10000);
-        return () => clearInterval(timer); // очистка при размонтировании
-    }, [images.length]);
+
+        return () => clearInterval(timer);
+    }, [images.length, autoPlay]);
+
 
     const onTouchStart = (e) => {
         const x = e.touches ? e.touches[0].clientX : e.clientX;
@@ -27,6 +33,7 @@ const ProductPage = () => {
     };
     const onTouchEnd = (e) => {
         if (!touchStart) return;
+        setAutoPlay(false);
         const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
         const diff = touchStart - x;
         if (Math.abs(diff) > 40) {
@@ -87,12 +94,13 @@ const ProductPage = () => {
                                     <button
                                         key={index}
                                         onClick={() => {
+                                            setAutoPlay(false);
                                             setDirection(index > idx ? "left" : "right");
                                             setIdx(index);
                                         }}
                                         className={`w-16 h-16 sm:w-20 sm:h-20 border-2 rounded-md overflow-hidden ${images[idx] === img
-                                                ? "border-orange-600"
-                                                : "border-transparent"
+                                            ? "border-orange-600"
+                                            : "border-transparent"
                                             }`}
                                     >
                                         <img
@@ -168,7 +176,7 @@ const ProductPage = () => {
                 </div>
             </section>
             <NewArrivals />
-       </Layout>
+        </Layout>
     );
 };
 

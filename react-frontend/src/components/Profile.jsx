@@ -125,8 +125,8 @@ const Profile = () => {
                   {...register('name', { required: 'Введите имя' })}
                   type="text"
                   className={`shadow appearance-none border w-full py-2 px-3 bg-white leading-tight
-                  text-[var(--color-text)] border-gray-300 focus:outline-none
-                  focus:ring-2 focus:ring-[var(--color-primary)]
+                  text-text border-gray-300 focus:outline-none
+                  focus:ring-2 focus:ring-primary
                   ${errors.name ? 'border-red-500 focus:ring-red-500' : ''}`}
                 />
                 {errors.name && (
@@ -147,8 +147,8 @@ const Profile = () => {
                   })}
                   type="email"
                   className={`shadow appearance-none border w-full py-2 px-3 bg-white leading-tight
-                  text-[var(--color-text)] border-gray-300 focus:outline-none
-                  focus:ring-2 focus:ring-[var(--color-primary)]
+                  text-text border-gray-300 focus:outline-none
+                  focus:ring-2 focus:ring-primary
                   ${errors.email ? 'border-red-500 focus:ring-red-500' : ''}`}
                 />
                 {errors.email && (
@@ -163,8 +163,8 @@ const Profile = () => {
                   {...register('address', { required: 'Введите адрес' })}
                   type="text"
                   className={`shadow appearance-none border w-full py-2 px-3 bg-white leading-tight
-                  text-[var(--color-text)] border-gray-300 focus:outline-none
-                  focus:ring-2 focus:ring-[var(--color-primary)]
+                  text-text border-gray-300 focus:outline-none
+                  focus:ring-2 focus:ring-primary
                   ${errors.address ? 'border-red-500 focus:ring-red-500' : ''}`}
                 />
                 {errors.address && (
@@ -179,8 +179,8 @@ const Profile = () => {
                   {...register('mobile', { required: 'Введите телефон' })}
                   type="text"
                   className={`shadow appearance-none border w-full py-2 px-3 bg-white leading-tight
-                  text-[var(--color-text)] border-gray-300 focus:outline-none
-                  focus:ring-2 focus:ring-[var(--color-primary)]
+                  text-text border-gray-300 focus:outline-none
+                  focus:ring-2 focus:ring-primary
                   ${errors.mobile ? 'border-red-500 focus:ring-red-500' : ''}`}
                 />
                 {errors.mobile && (

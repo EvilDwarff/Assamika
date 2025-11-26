@@ -1,36 +1,11 @@
 import React, { useState } from "react";
-// Предполагаем, что у вас есть компонент Layout и изображение ProductImg
 import Layout from "./common/Layout";
+import OrderItem from "./common/OrderItem";
 import ProductImg from "../assets/img/products/image1.webp";
 
 
-// Компонент для отображения одного товара в списке заказа
-const OrderItem = ({ item }) => (
-  <div className="flex items-start gap-4 py-4 border-b border-[var(--color-border-light)]">
-    {/* Изображение */}
-    <div className="flex-shrink-0">
-      <img
-        src={item.image}
-        alt={item.title}
-        className="w-20 h-20 object-contain"
-      />
-    </div>
 
-    {/* Информация о товаре */}
-    <div className="flex-1 flex flex-col justify-center">
-      <p className="text-base text-[var(--color-text)] leading-snug">{item.title}</p>
-      <p className="text-sm text-gray-500 mt-0.5">{item.weight}</p>
-    </div>
-
-    {/* Количество и Цена */}
-    <div className="flex flex-col items-end text-right min-w-[100px]">
-      <div className="text-base text-gray-600 mb-1">Кол-во: {item.quantity}</div>
-      <div className="text-base font-medium text-[var(--color-text)]">{item.price * item.quantity} ₽</div>
-    </div>
-  </div>
-);
-
-// Компонент поля ввода (обновлен для обработки onChange)
+// Компонент поля ввода 
 const InputField = ({ label, name, value, onChange, type = "text" }) => (
   <div className="flex flex-col">
     <label htmlFor={name} className="text-gray-700 text-sm font-semibold mb-2">
@@ -42,13 +17,12 @@ const InputField = ({ label, name, value, onChange, type = "text" }) => (
       type={type}
       value={value}
       onChange={onChange}
-      // Стили без readOnly
       className={`shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] bg-white text-[var(--color-text)] border-gray-300`}
     />
   </div>
 );
 
-// Компонент выпадающего списка (обновлен для обработки onChange)
+// Компонент выпадающего списка 
 const SelectField = ({ label, name, options, value, onChange }) => (
   <div className="flex flex-col">
     <label htmlFor={name} className="text-gray-700 text-sm font-semibold mb-2">
