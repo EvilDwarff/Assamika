@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-
+import Logo from '../../assets/logo.svg';
 export default function Footer() {
     const navItems = [
         { name: 'О НАС', href: '/#about' },
@@ -15,7 +15,7 @@ export default function Footer() {
                 <div className="hidden lg:flex justify-between items-center"> {/* Изменено на items-center */}
                     {/* Логотип и название */}
                     <div className="flex items-center space-x-3">
-                        <img src="/logo.svg" alt="Логотип" className="h-10 w-auto" />
+                        <img src={Logo} alt="Логотип" className="h-10 w-auto" />
                         <span className="text-xl font-prosto text-text">Ассамика</span>
                     </div>
 

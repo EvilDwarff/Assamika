@@ -96,7 +96,7 @@ const RegisterUser = () => {
                                     id="password"
                                     {...register('password', {
                                         required: 'Введите пароль',
-                                        minLength: { value: 6, message: 'Минимум 6 символов' },
+                                        minLength: { value: 8, message: 'Минимум 8 символов' },
                                     })}
                                     type={showPassword ? 'text' : 'password'}
                                     className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-orange-500 ${errors.password ? 'border-red-500' : 'border-gray-300'

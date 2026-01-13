@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from "react-router-dom"
 import PersonIcon from '../../assets/img/Icons/Person.svg'
 import CartIcon from '../../assets/img/Icons/local_mall.svg'
+import Logo from '../../assets/logo.svg';
 
 
 
@@ -22,7 +23,7 @@ export default function Header() {
                 {/* Логотип */}
                 <Link to="/">
                     <div className="flex items-center space-x-3">
-                        <img src="/logo.svg" alt="Логотип" className="h-10 w-auto" />
+                        <img src={Logo} alt="Логотип" className="h-10 w-auto" />
                         <span className="text-xl font-prosto text-text">Ассамика</span>
                     </div>
                 </Link>
