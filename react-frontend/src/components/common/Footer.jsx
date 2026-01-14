@@ -15,7 +15,8 @@ export default function Footer() {
                 <div className="hidden lg:flex justify-between items-center"> {/* Изменено на items-center */}
                     {/* Логотип и название */}
                     <div className="flex items-center space-x-3">
-                        <img src={Logo} alt="Логотип" className="h-10 w-auto" />
+                        <img src={Logo} alt="Логотип" className="h-10 w-auto" style={{ WebkitUserDrag: 'none' }} // Специально для Safari
+    draggable="false"  />
                         <span className="text-xl font-prosto text-text">Ассамика</span>
                     </div>
 
@@ -64,7 +65,8 @@ export default function Footer() {
                     <div className="flex flex-col items-center space-y-4">
                         {/* Логотип и название */}
                         <div className="flex items-center space-x-3">
-                            <img src="/logo.svg" alt="Логотип" className="h-8 w-auto" />
+                            <img src={Logo} alt="Логотип" className="h-8 w-auto" style={{ WebkitUserDrag: 'none' }} // Специально для Safari
+    draggable="false" />
                             <span className="text-lg font-prosto text-text">Ассамика</span>
                         </div>
 

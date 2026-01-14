@@ -36,9 +36,6 @@ const Login = () => {
                         name: result.name
                     }
                     localStorage.setItem('adminInfo', JSON.stringify(adminInfo))
-
-
-
                     login(adminInfo)
                     navigate('/admin/dashboard')
                 } else {

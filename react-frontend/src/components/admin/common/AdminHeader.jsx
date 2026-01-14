@@ -17,7 +17,7 @@ export default function AdminHeader() {
     return (
         <header className="bg-bg-block sticky top-0 left-0 w-full z-50 shadow-md">
             <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                <Link to="/">
+                <Link to="/admin/dashboard">
                     <div className="flex items-center space-x-3">
                         <span className="text-xl font-prosto text-text">ADMIN</span>
                     </div>

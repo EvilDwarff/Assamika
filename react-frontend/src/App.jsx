@@ -19,6 +19,9 @@ import OrdersHistory from './components/OrdersHistory';
 const ShowCategories = lazy(() => import("@components/admin/categories/Show"));
 const CreateCategory = lazy(() => import("@components/admin/categories/Create"));
 const EditCategory = lazy(() => import("@components/admin/categories/Edit"));
+const ShowProducts = lazy(() => import("@components/admin/products/Show"));
+const CreateProduct = lazy(() => import("@components/admin/products/Create"));
+const EditProduct = lazy(() => import("@components/admin/products/Edit"));
 
 function App() {
 
@@ -126,6 +129,45 @@ function App() {
               </Suspense>
             </AdminRequireAuth>
           } />
+
+          <Route
+  path="/admin/products"
+  element={
+    <AdminRequireAuth>
+      <Suspense
+        fallback={<div className="sm:my-10 lg:my-20">Загрузка...</div>}
+      >
+        <ShowProducts />
+      </Suspense>
+    </AdminRequireAuth>
+  }
+/>
+
+<Route
+  path="/admin/products/create"
+  element={
+    <AdminRequireAuth>
+      <Suspense
+        fallback={<div className="sm:my-10 lg:my-20">Загрузка...</div>}
+      >
+        <CreateProduct />
+      </Suspense>
+    </AdminRequireAuth>
+  }
+/>
+
+<Route
+  path="/admin/products/edit/:id"
+  element={
+    <AdminRequireAuth>
+      <Suspense
+        fallback={<div className="sm:my-10 lg:my-20">Загрузка...</div>}
+      >
+        <EditProduct />
+      </Suspense>
+    </AdminRequireAuth>
+  }
+/>
 
         </Routes>
       </BrowserRouter>
