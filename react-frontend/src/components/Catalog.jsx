@@ -1,47 +1,50 @@
-import React, { useState } from 'react';
-import ProductCard from './common/ProductCard';
-import teaImg1 from '../assets/img/products/image1.webp';
-import teaImg2 from '../assets/img/products/image2.webp';
-import teaImg3 from '../assets/img/products/image3.webp';
+import React, { useEffect, useMemo, useState } from 'react';
 import Layout from './common/Layout';
+import ProductCard from './common/ProductCard';
+import { apiUrl, apiPhoto } from '@components/common/http';
 
 const CatalogPage = () => {
-    const [selectedCategories, setSelectedCategories] = useState(['Конфеты']);
-    const [selectedSort, setSelectedSort] = useState(['Популярные']);
+    const [categories, setCategories] = useState([]); // [{id,name,products_count}]
+    const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
+    const [sort, setSort] = useState('popular'); // popular|new|cheap|expensive
+    const [products, setProducts] = useState([]);
+
     const [showCategories, setShowCategories] = useState(true);
     const [showSort, setShowSort] = useState(true);
 
-    const categories = ['Мука', 'Чай', 'Макароны', 'Конфеты'];
-    const sorts = ['Дешевые', 'Дорогие', 'Новинки', 'Популярные'];
+    // загрузка категорий
+    useEffect(() => {
+        (async () => {
+            const res = await fetch(`${apiUrl}/categories`);
+            const data = await res.json();
+            setCategories(data.data || []);
+        })();
+    }, []);
 
-    const toggleCategory = (name) => {
-        setSelectedCategories((prev) =>
-            prev.includes(name) ? prev.filter((c) => c !== name) : [...prev, name]
+    // загрузка товаров (с фильтрами)
+    useEffect(() => {
+        (async () => {
+            const qs = new URLSearchParams();
+            if (selectedCategoryIds.length) qs.set('categories', selectedCategoryIds.join(','));
+            qs.set('sort', sort);
+
+            const res = await fetch(`${apiUrl}/products?${qs.toString()}`);
+            const data = await res.json();
+            setProducts(data.data || []);
+        })();
+    }, [selectedCategoryIds, sort]);
+
+    const toggleCategory = (id) => {
+        setSelectedCategoryIds((prev) =>
+            prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
         );
     };
-
-    const toggleSort = (name) => {
-        setSelectedSort((prev) =>
-            prev.includes(name) ? prev.filter((s) => s !== name) : [...prev, name]
-        );
-    };
-
-    const products = [
-        { id: 1, image: teaImg1, title: 'Ceylon Ginger', price: 485, weight: 50, unit: 'g' },
-        { id: 2, image: teaImg2, title: 'Cinnamon Chai Tea', price: 485, weight: 50, unit: 'g' },
-        { id: 3, image: teaImg3, title: 'Black Assam Tea', price: 485, weight: 50, unit: 'g' },
-        { id: 4, image: teaImg1, title: 'Ceylon Ginger', price: 485, weight: 50, unit: 'g' },
-        { id: 5, image: teaImg2, title: 'Cinnamon Chai Tea', price: 485, weight: 50, unit: 'g' },
-        { id: 6, image: teaImg3, title: 'Black Assam Tea', price: 485, weight: 50, unit: 'g' },
-    ];
 
     return (
         <Layout>
             <section className="pt-4 md:pt-8 lg:pt-12 pb-8 md:pb-16">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    {/* Контейнер: фильтры + карточки */}
                     <div className="flex flex-col lg:flex-row gap-10">
-                        {/* Левая панель — фильтры */}
                         <aside className="w-full lg:w-1/4">
                             {/* Категории */}
                             <div className="mb-4">
@@ -56,81 +59,85 @@ const CatalogPage = () => {
                                     </span>
                                 </button>
 
-                                <ul
-                                    className={`flex flex-col gap-2 overflow-hidden transition-all duration-300 ${showCategories ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
-                                        }`}
-                                >
+                                <ul className={`flex flex-col gap-2 overflow-hidden transition-all duration-300 ${showCategories ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
                                     {categories.map((cat) => (
-                                        <li key={cat} className="flex items-center gap-2">
+                                        <li key={cat.id} className="flex items-center gap-2">
                                             <input
                                                 type="checkbox"
-                                                id={cat}
-                                                checked={selectedCategories.includes(cat)}
-                                                onChange={() => toggleCategory(cat)}
+                                                id={`cat-${cat.id}`}
+                                                checked={selectedCategoryIds.includes(cat.id)}
+                                                onChange={() => toggleCategory(cat.id)}
                                                 className="accent-orange-600 w-4 h-4"
                                             />
-                                            <label htmlFor={cat} className="text-text text-sm">
-                                                {cat}
+                                            <label htmlFor={`cat-${cat.id}`} className="text-text text-sm">
+                                                {cat.name}
+                                                {typeof cat.products_count === 'number' ? (
+                                                    <span className="text-gray-500"> ({cat.products_count})</span>
+                                                ) : null}
                                             </label>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
 
-                            {/* Сортировка */}
+                            {/* Сортировка (лучше radio) */}
                             <div className="mt-4 py-4">
                                 <button
                                     type="button"
                                     onClick={() => setShowSort(!showSort)}
                                     className="flex w-full items-center justify-between text-lg font-medium text-text mb-4"
                                 >
-                                    Сортировать
+                                    Сортировка
                                     <span className="text-text text-xl leading-none">
                                         {showSort ? '–' : '+'}
                                     </span>
                                 </button>
 
-                                <ul
-                                    className={`flex flex-col gap-2 overflow-hidden transition-all duration-300 ${showSort ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
-                                        }`}
-                                >
-                                    {sorts.map((sort) => (
-                                        <li key={sort} className="flex items-center gap-2">
+                                <div className={`flex flex-col gap-2 overflow-hidden transition-all duration-300 ${showSort ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                    {[
+                                        { id: 'cheap', label: 'Дешевые' },
+                                        { id: 'expensive', label: 'Дорогие' },
+                                        { id: 'new', label: 'Новинки' },
+                                        { id: 'popular', label: 'Популярные' },
+                                    ].map((s) => (
+                                        <label key={s.id} className="flex items-center gap-2 text-sm text-text">
                                             <input
-                                                type="checkbox"
-                                                id={sort}
-                                                checked={selectedSort.includes(sort)}
-                                                onChange={() => toggleSort(sort)}
+                                                type="radio"
+                                                name="sort"
+                                                value={s.id}
+                                                checked={sort === s.id}
+                                                onChange={() => setSort(s.id)}
                                                 className="accent-orange-600 w-4 h-4"
                                             />
-                                            <label htmlFor={sort} className="text-text text-sm">
-                                                {sort}
-                                            </label>
-                                        </li>
+                                            {s.label}
+                                        </label>
                                     ))}
-                                </ul>
+                                </div>
                             </div>
                         </aside>
 
-                        {/* Правая часть — карточки */}
+                        {/* Товары */}
                         <div className="w-full lg:w-3/4">
                             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                                {products.map((product) => (
+                                {products.map((p) => (
                                     <ProductCard
-                                        key={product.id}
-                                        image={product.image}
-                                        title={product.title}
-                                        price={product.price}
-                                        weight={product.weight}
-                                        unit={product.unit}
+                                        key={p.id}
+                                        id={p.id}
+                                        image={p.image ? `${apiPhoto}/${p.image}` : null}
+                                        title={p.name}
+                                        price={p.price}                       
+                                        discount_price={p.discount_price}     
+                                        weight={p.weight}
+                                        soldOut={p.status === 'sold_out' || Number(p.reserve) <= 0}
                                     />
                                 ))}
                             </div>
                         </div>
+
                     </div>
                 </div>
             </section>
-          </Layout>
+        </Layout>
     );
 };
 
