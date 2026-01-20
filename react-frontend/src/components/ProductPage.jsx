@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Layout from "./common/Layout";
 import NewArrivals from "./common/NewArrivals";
-import { apiUrl, apiPhoto } from "@components/common/http";
+import { apiUrl, apiPhoto, userToken } from "@components/common/http";
 
 const money = (v) => {
   const n = Number(v);
@@ -10,8 +10,44 @@ const money = (v) => {
   return new Intl.NumberFormat("ru-RU").format(n) + " ₽";
 };
 
+/** ---------- Toast (без библиотек) ---------- */
+const Toast = ({ toast, onClose }) => {
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(onClose, 2500);
+    return () => clearTimeout(t);
+  }, [toast, onClose]);
+
+  if (!toast) return null;
+
+  const isOk = toast.type === "success";
+  return (
+    <div className="fixed z-[9999] top-4 right-4 max-w-[90vw]">
+      <div
+        className={`px-4 py-3 shadow-lg border rounded-xl text-sm flex items-start gap-3 ${
+          isOk
+            ? "bg-green-50 border-green-200 text-green-800"
+            : "bg-red-50 border-red-200 text-red-800"
+        }`}
+      >
+        <div className="font-semibold">{isOk ? "Готово" : "Ошибка"}</div>
+        <div className="flex-1">{toast.message}</div>
+        <button
+          onClick={onClose}
+          className="text-gray-500 hover:text-gray-700 -mt-1"
+          aria-label="Закрыть"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
+  );
+};
+/** ------------------------------------------ */
+
 const ProductPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   // product from API
   const [product, setProduct] = useState(null);
@@ -20,24 +56,20 @@ const ProductPage = () => {
   // slider state
   const [idx, setIdx] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
-  const [direction, setDirection] = useState(""); // "left" | "right"
+  const [direction, setDirection] = useState("");
   const [autoPlay, setAutoPlay] = useState(true);
 
-  // cart UI state (пока локально как у тебя)
-  const [quantity, setQuantity] = useState(1);
+  // cart state (реальное)
   const [inCart, setInCart] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const [cartItemId, setCartItemId] = useState(null); // id позиции в корзине
+  const [cartBusy, setCartBusy] = useState(false);
 
-  const increaseQuantity = () => setQuantity((q) => q + 1);
-  const decreaseQuantity = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
+  // toast
+  const [toast, setToast] = useState(null);
+  const showToast = (type, message) => setToast({ type, message });
 
-  const handleAddToCart = () => {
-    setIsAnimating(true);
-    setTimeout(() => {
-      setInCart(true);
-      setIsAnimating(false);
-    }, 200);
-  };
+  const token = userToken();
 
   // fetch product
   useEffect(() => {
@@ -47,6 +79,7 @@ const ProductPage = () => {
         const res = await fetch(`${apiUrl}/products/${id}`);
         const data = await res.json();
         if (!res.ok) throw new Error(data?.message || "Ошибка загрузки товара");
+
         setProduct(data.data);
         setIdx(0);
         setAutoPlay(true);
@@ -59,17 +92,11 @@ const ProductPage = () => {
     })();
   }, [id]);
 
-  // build images array from API:
-  // - prefer gallery images
-  // - include main image if exists and not duplicated
+  // build images array from API
   const images = useMemo(() => {
     if (!product) return [];
     const list = [];
-
-    // 1) main image first (если есть)
     if (product.image) list.push(`${apiPhoto}/${product.image}`);
-
-    // 2) gallery images
     if (Array.isArray(product.images)) {
       for (const im of product.images) {
         if (!im?.image) continue;
@@ -77,11 +104,10 @@ const ProductPage = () => {
         if (!list.includes(url)) list.push(url);
       }
     }
-
     return list;
   }, [product]);
 
-  // sold out condition
+  // sold out
   const soldOut = useMemo(() => {
     if (!product) return false;
     return product.status === "sold_out" || Number(product.reserve) <= 0;
@@ -106,6 +132,151 @@ const ProductPage = () => {
     if (!p || !dp) return null;
     return Math.round(((p - dp) / p) * 100);
   }, [product, hasDiscount]);
+
+  /** ---------- CART API helpers ---------- */
+  const apiHeaders = useMemo(() => {
+    const h = {};
+    if (token) h.Authorization = `Bearer ${token}`;
+    return h;
+  }, [token]);
+
+  const ensureAuth = () => {
+    if (!token) {
+      showToast("error", "Нужно войти, чтобы пользоваться корзиной");
+      // если хочешь — редирект:
+      // navigate("/login");
+      return false;
+    }
+    return true;
+  };
+
+  const fetchCartAndSync = async () => {
+    if (!token) return;
+    try {
+      const res = await fetch(`${apiUrl}/cart`, { headers: apiHeaders });
+      const data = await res.json();
+      if (!res.ok) return;
+
+      const items = data?.data?.items || [];
+      const found = items.find((it) => Number(it?.product?.id) === Number(id));
+
+      if (found) {
+        setInCart(true);
+        setQuantity(Number(found.qty || 1));
+        setCartItemId(found.id);
+      } else {
+        setInCart(false);
+        setQuantity(1);
+        setCartItemId(null);
+      }
+    } catch (e) {
+      // не спамим
+    }
+  };
+
+  const addToCart = async (qty = 1) => {
+    if (!ensureAuth()) return;
+    if (soldOut) return;
+
+    setCartBusy(true);
+    try {
+      const res = await fetch(`${apiUrl}/cart/items`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...apiHeaders,
+        },
+        body: JSON.stringify({ product_id: Number(id), qty: Number(qty) }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || "Не удалось добавить в корзину");
+
+      // найдем itemId этой позиции
+      const items = data?.data?.items || [];
+      const found = items.find((it) => Number(it?.product?.id) === Number(id));
+
+      setInCart(true);
+      setQuantity(Number(found?.qty || qty));
+      setCartItemId(found?.id || null);
+
+      showToast("success", "Товар добавлен в корзину");
+    } catch (e) {
+      showToast("error", e.message || "Ошибка");
+    } finally {
+      setCartBusy(false);
+    }
+  };
+
+  const updateQty = async (newQty) => {
+    if (!ensureAuth()) return;
+    if (!cartItemId) {
+      // если почему-то нет itemId — добавим
+      await addToCart(newQty);
+      return;
+    }
+
+    setCartBusy(true);
+    try {
+      const res = await fetch(`${apiUrl}/cart/items/${cartItemId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          ...apiHeaders,
+        },
+        body: JSON.stringify({ qty: Number(newQty) }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || "Не удалось обновить количество");
+
+      // синхронизируем из ответа
+      const items = data?.data?.items || [];
+      const found = items.find((it) => Number(it?.product?.id) === Number(id));
+
+      setQuantity(Number(found?.qty || newQty));
+      showToast("success", "Количество обновлено");
+    } catch (e) {
+      showToast("error", e.message || "Ошибка");
+      // на всякий — перечитать корзину
+      await fetchCartAndSync();
+    } finally {
+      setCartBusy(false);
+    }
+  };
+
+  const removeFromCart = async () => {
+    if (!ensureAuth()) return;
+    if (!cartItemId) return;
+
+    setCartBusy(true);
+    try {
+      const res = await fetch(`${apiUrl}/cart/items/${cartItemId}`, {
+        method: "DELETE",
+        headers: apiHeaders,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || "Не удалось удалить");
+
+      setInCart(false);
+      setQuantity(1);
+      setCartItemId(null);
+      showToast("success", "Товар удалён из корзины");
+    } catch (e) {
+      showToast("error", e.message || "Ошибка");
+    } finally {
+      setCartBusy(false);
+    }
+  };
+  /** -------------------------------------- */
+
+  // при открытии страницы: если залогинен — узнаем, есть ли товар в корзине
+ useEffect(() => {
+  if (!token) return;       // гость — корзину не трогаем
+  fetchCartAndSync();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [id, token]);
+
 
   // autoplay slider
   useEffect(() => {
@@ -165,6 +336,8 @@ const ProductPage = () => {
 
   return (
     <Layout>
+      <Toast toast={toast} onClose={() => setToast(null)} />
+
       <section className="pt-4 md:pt-8 pb-12 md:pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
@@ -195,14 +368,12 @@ const ProductPage = () => {
                   </div>
                 )}
 
-                {/* Бейдж скидки на фото */}
                 {hasDiscount && discountPercent !== null ? (
                   <div className="absolute top-3 left-3 bg-orange-600 text-white text-sm px-3 py-1 rounded-full shadow">
                     -{discountPercent}%
                   </div>
                 ) : null}
 
-                {/* Бейдж распродано */}
                 {soldOut ? (
                   <div className="absolute top-3 right-3 bg-red-600 text-white text-sm px-3 py-1 rounded-full shadow">
                     Распродано
@@ -210,7 +381,6 @@ const ProductPage = () => {
                 ) : null}
               </div>
 
-              {/* Миниатюры */}
               {images.length > 1 && (
                 <div className="flex justify-center gap-3 mt-4 overflow-x-auto">
                   {images.map((img, index) => (
@@ -232,11 +402,10 @@ const ProductPage = () => {
               )}
             </div>
 
-            {/* Правая часть — Информация */}
+            {/* Правая часть */}
             <div className="w-full lg:w-1/2 text-text">
               <h1 className="title mb-4">{product.name}</h1>
 
-              {/* Цена + вес */}
               <div className="flex flex-wrap items-center gap-4 mb-6 text-lg md:text-[32px]">
                 {hasDiscount ? (
                   <div className="flex flex-wrap items-baseline gap-3">
@@ -254,53 +423,63 @@ const ProductPage = () => {
                 ) : null}
               </div>
 
-              {/* Описание */}
               {product.description ? (
                 <div className="text-base text-justify sm:text-md mb-8 leading-relaxed max-w-prose">
                   <p>{product.description}</p>
                 </div>
               ) : null}
 
-              {/* Кнопка / счетчик / распродано */}
-              <div
-                className={`transition-all duration-500 ease-in-out transform ${
-                  isAnimating ? "scale-95 opacity-0" : "scale-100 opacity-100"
-                }`}
-              >
-                {soldOut ? (
-                  <div className="inline-flex items-center gap-3 bg-red-50 text-red-700 border border-red-200 px-6 py-4">
-                    Товар распродан
-                  </div>
-                ) : !inCart ? (
-                  <button
-                    onClick={handleAddToCart}
-                    className="bg-orange-600 hover:bg-orange-700 text-white uppercase px-10 py-4 text-lg transition-colors"
-                  >
-                    В корзину
-                  </button>
-                ) : (
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-                    <div className="flex items-center border border-gray-300 text-lg">
-                      <button
-                        onClick={decreaseQuantity}
-                        className="px-4 py-2 font-bold hover:bg-gray-100"
-                      >
-                        –
-                      </button>
-                      <span className="px-6">{quantity}</span>
-                      <button
-                        onClick={increaseQuantity}
-                        className="px-4 py-2 font-bold hover:bg-gray-100"
-                      >
-                        +
-                      </button>
-                    </div>
-                    <button className="bg-gray-400 text-white px-8 py-3 uppercase text-lg transition-colors">
-                      В корзине
+              {/* Корзина */}
+              {soldOut ? (
+                <div className="inline-flex items-center gap-3 bg-red-50 text-red-700 border border-red-200 px-6 py-4">
+                  Товар распродан
+                </div>
+              ) : !inCart ? (
+                <button
+                  onClick={() => addToCart(1)}
+                  disabled={cartBusy}
+                  className="bg-orange-600 hover:bg-orange-700 disabled:opacity-60 text-white uppercase px-10 py-4 text-lg transition-colors"
+                >
+                  {cartBusy ? "Добавляем..." : "В корзину"}
+                </button>
+              ) : (
+                <div className="flex flex-wrap sm:flex-row sm:items-center gap-4 sm:gap-6">
+                  <div className="flex items-center border border-gray-300 text-lg ">
+                    <button
+                      onClick={() => updateQty(Math.max(1, quantity - 1))}
+                      disabled={cartBusy || quantity <= 1}
+                      className="px-4 py-2 font-bold hover:bg-gray-100 disabled:opacity-50"
+                    >
+                      –
+                    </button>
+                    <span className="px-6">{quantity}</span>
+                    <button
+                      onClick={() => updateQty(quantity + 1)}
+                      disabled={cartBusy}
+                      className="px-4 py-2 font-bold hover:bg-gray-100 disabled:opacity-50"
+                    >
+                      +
                     </button>
                   </div>
-                )}
-              </div>
+
+                  <button
+                    type="button"
+                    onClick={() => navigate("/cart")}
+                    className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 uppercase text-lg transition-colors"
+                  >
+                    В корзине
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={removeFromCart}
+                    disabled={cartBusy}
+                    className="border border-gray-300 bg-white hover:bg-gray-50 px-6 py-3 uppercase text-sm transition-colors disabled:opacity-50"
+                  >
+                    Убрать
+                  </button>
+                </div>
+              )}
 
               {/* Наличие */}
               <div className="mt-6 text-sm text-gray-600">

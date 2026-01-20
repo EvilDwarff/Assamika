@@ -7,8 +7,20 @@ export const adminToken = () => {
     return adminData.token;
 }
 
+// export const userToken = () => {
+//     const data = localStorage.getItem('userInfo')
+//     const userData = JSON.parse(data);
+//     return userData.token;
+// }
+
 export const userToken = () => {
-    const data = localStorage.getItem('userInfo')
-    const userData = JSON.parse(data);
-    return userData.token;
-}
+  try {
+    const data = localStorage.getItem("userInfo"); 
+    
+    if (!data) return null;
+const userData = JSON.parse(data);
+return userData.token;
+  } catch (e) {
+    return null;
+  }
+};
