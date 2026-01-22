@@ -17,8 +17,10 @@ class OrderController extends Controller
     // GET /api/orders (история моих заказов)
     public function index(Request $request)
     {
-        $orders = Order::with('items')
-            ->where('user_id', $request->user()->id)   
+        $userId = $request->user()->id;
+
+        $orders = Order::with(['items.product', 'user'])
+            ->where('user_id', $userId)
             ->orderByDesc('created_at')
             ->get();
 
@@ -28,8 +30,10 @@ class OrderController extends Controller
     // GET /api/orders/{id} (один мой заказ)
     public function show(Request $request, $id)
     {
-        $order = Order::with('items')
-            ->where('user_id', $request->user()->id)   
+        $userId = $request->user()->id;
+
+        $order = Order::with(['items.product', 'user'])
+            ->where('user_id', $userId)
             ->find($id);
 
         if (!$order) {
@@ -40,13 +44,11 @@ class OrderController extends Controller
     }
 
     // POST /api/orders
-    // {name, phone, address?, comment?}
+    // {payment_method, comment?}
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:50',
-            'address' => 'nullable|string|max:255',
+            'payment_method' => 'required|string|in:cash,card',
             'comment' => 'nullable|string|max:1000',
         ]);
 
@@ -54,7 +56,15 @@ class OrderController extends Controller
             return response()->json(['status' => 400, 'errors' => $validator->errors()], 400);
         }
 
-        $userId = $request->user()->id;
+        $user = $request->user();
+        $userId = $user->id;
+
+        if (!$user->mobile) {
+            return response()->json(['status' => 400, 'message' => 'Заполните телефон в профиле'], 400);
+        }
+        if (!$user->address) {
+            return response()->json(['status' => 400, 'message' => 'Заполните адрес в профиле'], 400);
+        }
 
         $cart = Cart::with('items')->where('user_id', $userId)->first();
         if (!$cart || $cart->items->isEmpty()) {
@@ -63,7 +73,11 @@ class OrderController extends Controller
 
         return DB::transaction(function () use ($request, $cart, $userId) {
             $productIds = $cart->items->pluck('product_id')->all();
-            $products = Product::whereIn('id', $productIds)->lockForUpdate()->get()->keyBy('id');
+
+            $products = Product::whereIn('id', $productIds)
+                ->lockForUpdate()
+                ->get()
+                ->keyBy('id');
 
             $subtotal = 0.0;
             $rows = [];
@@ -96,18 +110,13 @@ class OrderController extends Controller
                 $rows[] = [$p, $unitPrice, (int)$item->qty, $line];
             }
 
-            // доставка (пока 0, можешь заменить логикой)
             $shipping = 0.0;
-            // пример логики:
-            // $shipping = $subtotal >= 3000 ? 0 : 300;
-
             $grandTotal = $subtotal + $shipping;
 
             $order = Order::create([
                 'user_id' => $userId,
-                'name' => $request->name,
-                'phone' => $request->phone,
-                'address' => $request->address,
+                'payment_method' => $request->payment_method,
+                'comment' => $request->comment,
                 'subtotal' => number_format($subtotal, 2, '.', ''),
                 'shipping' => number_format($shipping, 2, '.', ''),
                 'grand_total' => number_format($grandTotal, 2, '.', ''),
@@ -125,7 +134,6 @@ class OrderController extends Controller
                     'line_total' => number_format($line, 2, '.', ''),
                 ]);
 
-                // списание остатков
                 $p->reserve = (int)$p->reserve - $qty;
                 $p->sold_count = (int)$p->sold_count + $qty;
 
@@ -139,10 +147,10 @@ class OrderController extends Controller
                 $p->save();
             }
 
-            // очистка корзины
             CartItem::where('cart_id', $cart->id)->delete();
 
-            $order->load('items');
+            // ✅ важно: items.product чтобы на фронте было фото/вес
+            $order->load(['items.product', 'user']);
 
             return response()->json([
                 'status' => 200,

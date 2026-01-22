@@ -45,8 +45,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/catalog' element={<CatalogPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
-          <Route path='/cart' element={<CartPage />} />
-          <Route path='/checkout' element={<CheckoutPage />} />
+
           <Route path='/admin/login' element={<Login />} />
           <Route path='/account/login' element={<LoginUser />} />
           <Route path='/account/register' element={<RegisterUser />} />
@@ -57,6 +56,19 @@ function App() {
             </RequireAuth>
           } />
 
+
+          <Route path='/cart' element={
+            <RequireAuth>
+              <CartPage />
+            </RequireAuth>
+          } />
+
+          <Route path='/checkout' element={
+            <RequireAuth>
+              <CheckoutPage />
+            </RequireAuth>
+          } />
+        
 
           <Route path='/orders' element={
             <RequireAuth>
@@ -131,43 +143,43 @@ function App() {
           } />
 
           <Route
-  path="/admin/products"
-  element={
-    <AdminRequireAuth>
-      <Suspense
-        fallback={<div className="sm:my-10 lg:my-20">Загрузка...</div>}
-      >
-        <ShowProducts />
-      </Suspense>
-    </AdminRequireAuth>
-  }
-/>
+            path="/admin/products"
+            element={
+              <AdminRequireAuth>
+                <Suspense
+                  fallback={<div className="sm:my-10 lg:my-20">Загрузка...</div>}
+                >
+                  <ShowProducts />
+                </Suspense>
+              </AdminRequireAuth>
+            }
+          />
 
-<Route
-  path="/admin/products/create"
-  element={
-    <AdminRequireAuth>
-      <Suspense
-        fallback={<div className="sm:my-10 lg:my-20">Загрузка...</div>}
-      >
-        <CreateProduct />
-      </Suspense>
-    </AdminRequireAuth>
-  }
-/>
+          <Route
+            path="/admin/products/create"
+            element={
+              <AdminRequireAuth>
+                <Suspense
+                  fallback={<div className="sm:my-10 lg:my-20">Загрузка...</div>}
+                >
+                  <CreateProduct />
+                </Suspense>
+              </AdminRequireAuth>
+            }
+          />
 
-<Route
-  path="/admin/products/edit/:id"
-  element={
-    <AdminRequireAuth>
-      <Suspense
-        fallback={<div className="sm:my-10 lg:my-20">Загрузка...</div>}
-      >
-        <EditProduct />
-      </Suspense>
-    </AdminRequireAuth>
-  }
-/>
+          <Route
+            path="/admin/products/edit/:id"
+            element={
+              <AdminRequireAuth>
+                <Suspense
+                  fallback={<div className="sm:my-10 lg:my-20">Загрузка...</div>}
+                >
+                  <EditProduct />
+                </Suspense>
+              </AdminRequireAuth>
+            }
+          />
 
         </Routes>
       </BrowserRouter>

@@ -149,7 +149,7 @@ const CartPage = () => {
           {!token ? (
             <div className="bg-bg-block shadow-md p-6 text-center">
               <p className="text-text mb-4">Чтобы пользоваться корзиной, нужно войти в аккаунт.</p>
-              <button className="btn btn-primary" onClick={() => navigate("/login")}>
+              <button className="btn btn-primary" onClick={() => navigate("/account/login")}>
                 Войти
               </button>
             </div>
@@ -262,7 +262,7 @@ const CartPage = () => {
 
                 <button
                   className="w-full mt-6 btn btn-primary uppercase tracking-wider"
-                  onClick={() => toast.info("Дальше подключим оформление заказа")}
+                  onClick={() => navigate('/checkout')}
                 >
                   Подтвердить
                 </button>
