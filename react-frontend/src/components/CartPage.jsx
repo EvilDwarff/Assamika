@@ -99,7 +99,7 @@ const CartPage = () => {
       if (!res.ok) throw new Error(data?.message || "Не удалось обновить количество");
 
       setCart(data?.data || { items: [], subtotal: 0 });
-      toast.success("Количество обновлено");
+      //toast.success("Количество обновлено");
     } catch (e) {
       toast.error(e.message || "Ошибка");
     } finally {

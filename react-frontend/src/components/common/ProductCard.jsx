@@ -35,7 +35,7 @@ const ProductCard = ({
     const token = userToken();
     if (!token) {
       toast.error('Нужно войти, чтобы добавить в корзину');
-      // navigate('/login'); // если хочешь сразу отправлять на логин
+  
       return;
     }
 
@@ -58,7 +58,7 @@ const ProductCard = ({
         throw new Error(data?.message || 'Ошибка добавления в корзину');
       }
 
-      toast.success('Добавлено в корзину');
+      //toast.success('Добавлено в корзину');
     } catch (err) {
       toast.error(err.message || 'Ошибка');
     } finally {

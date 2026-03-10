@@ -13,6 +13,8 @@ use App\Http\Controllers\front\CategoryController as FrontCategoryController;
 use App\Http\Controllers\front\OrderController as FrontOrderController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
+
+
 Route::get('/hello', fn() => ['message' => 'Laravel 12 API работает!']);
 
 

@@ -73,7 +73,7 @@ const OrdersHistory = () => {
           <div className="container mx-auto px-4">
             <div className="bg-white border border-[var(--color-border-light)] p-6 text-center">
               <p className="text-[var(--color-text)] mb-4">Чтобы посмотреть заказы, нужно войти.</p>
-              <button className="btn btn-primary" onClick={() => navigate("/login")}>
+              <button className="btn btn-primary" onClick={() => navigate("/account/login")}>
                 Войти
               </button>
             </div>

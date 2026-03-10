@@ -63,7 +63,7 @@ const Profile = () => {
 
   const logout = () => {
     localStorage.removeItem('userInfo');
-    navigate('/');
+    navigate('/account/login');
     toast.info('Вы вышли из аккаунта');
   };
 

@@ -49,45 +49,7 @@ class AccountController extends Controller
         ], 200);
     }
 
-    // public function getOrderDetails($id, Request $request)
-    // {
-    //     $order = Order::where('user_id', $request->user()->id)
-    //         ->with('items', 'items.product')
-    //         ->find($id);
-
-    //     if (!$order) {
-    //         return response()->json([
-    //             'status' => 404,
-    //             'message' => 'Заказ не найден.',
-    //             'data' => []
-    //         ], 404);
-    //     }
-
-    //     return response()->json([
-    //         'status' => 200,
-    //         'data' => $order
-    //     ], 200);
-    // }
-
-    // public function getOrders(Request $request)
-    // {
-    //     $orders = Order::where('user_id', $request->user()->id)
-    //         ->orderByDesc('created_at')
-    //         ->get();
-
-    //     if ($orders->isEmpty()) {
-    //         return response()->json([
-    //             'status' => 404,
-    //             'message' => 'У вас пока нет заказов.',
-    //             'data' => []
-    //         ], 404);
-    //     }
-
-    //     return response()->json([
-    //         'status' => 200,
-    //         'data' => $orders
-    //     ], 200);
-    // }
+    
 
     public function updateProfile(UpdateProfileRequest $request)
     {

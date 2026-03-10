@@ -22,6 +22,10 @@ const EditCategory = lazy(() => import("@components/admin/categories/Edit"));
 const ShowProducts = lazy(() => import("@components/admin/products/Show"));
 const CreateProduct = lazy(() => import("@components/admin/products/Create"));
 const EditProduct = lazy(() => import("@components/admin/products/Edit"));
+const AdminOrdersPage = lazy(() => import("@components/admin/orders/AdminOrdersPage"));
+const AdminOrderDetailsPage = lazy(() => import("@components/admin/orders/AdminOrderDetailsPage"));
+
+
 
 function App() {
 
@@ -68,7 +72,7 @@ function App() {
               <CheckoutPage />
             </RequireAuth>
           } />
-        
+
 
           <Route path='/orders' element={
             <RequireAuth>
@@ -176,6 +180,42 @@ function App() {
                   fallback={<div className="sm:my-10 lg:my-20">Загрузка...</div>}
                 >
                   <EditProduct />
+                </Suspense>
+              </AdminRequireAuth>
+            }
+          />
+
+          {/* Список заказов */}
+          <Route
+            path="/admin/orders"
+            element={
+              <AdminRequireAuth>
+                <Suspense
+                  fallback={
+                    <div className="sm:my-10 lg:my-20 text-center">
+                      Загрузка...
+                    </div>
+                  }
+                >
+                  <AdminOrdersPage />
+                </Suspense>
+              </AdminRequireAuth>
+            }
+          />
+
+          {/* Детали заказа */}
+          <Route
+            path="/admin/orders/:id"
+            element={
+              <AdminRequireAuth>
+                <Suspense
+                  fallback={
+                    <div className="sm:my-10 lg:my-20 text-center">
+                      Загрузка...
+                    </div>
+                  }
+                >
+                  <AdminOrderDetailsPage />
                 </Suspense>
               </AdminRequireAuth>
             }
