@@ -27,14 +27,14 @@ const mapStatus = (s) => {
     new: "Новый",
     processing: "В обработке",
     shipped: "В пути",
-    delivered: "Доставлен",
+    paid: "Оплачен",
     canceled: "Отменён",
   };
   return m[s] || s || "-";
 };
 
 const statusPillClass = (s) => {
-  if (s === "delivered") return "bg-green-100 text-green-700 border-green-200";
+  if (s === "paid") return "bg-green-100 text-green-700 border-green-200";
   if (s === "shipped") return "bg-blue-100 text-blue-700 border-blue-200";
   if (s === "processing") return "bg-yellow-100 text-yellow-800 border-yellow-200";
   if (s === "canceled") return "bg-red-100 text-red-700 border-red-200";
@@ -151,20 +151,10 @@ const AdminOrderDetailsPage = () => {
       <section className="bg-[var(--color-bg-base)] pt-5 pb-20">
         <div className="container mx-auto px-4">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+          <div className="flex items-center justify-between mb-6 flex-nowrap">
             <div className="flex items-center justify-between gap-4">
               <h1 className="title">Заказ #{id}</h1>
 
-              <button
-                onClick={() => navigate(-1)}
-                className="btn btn-primary hidden md:block uppercase"
-              >
-                НАЗАД
-              </button>
-
-              <button onClick={() => navigate(-1)} className="md:hidden text-[var(--color-text)]">
-                ← Назад
-              </button>
             </div>
 
             <div className="flex items-center gap-3">
@@ -275,7 +265,7 @@ const AdminOrderDetailsPage = () => {
                   <div className="p-4 border-t">
                     <div className="flex flex-col sm:items-end gap-1 text-sm text-gray-700">
                       <div className="flex justify-between sm:w-80">
-                        <span>Подытог</span>
+                        <span>Сумма заказа</span>
                         <span className="font-medium">{fmtMoney(order.subtotal ?? 0)}</span>
                       </div>
 
@@ -359,7 +349,7 @@ const AdminOrderDetailsPage = () => {
                     <option value="new">Новый</option>
                     <option value="processing">В обработке</option>
                     <option value="shipped">В пути</option>
-                    <option value="delivered">Доставлен</option>
+                    <option value="paid">Оплачен</option>
                     <option value="canceled">Отменён</option>
                   </select>
 

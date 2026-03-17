@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('grand_total', 10, 2)->default(0);
             $table->text('cancellation_reason')->nullable();
             $table->decimal('total', 10, 2)->default(0);
-            $table->enum('status', ['new','paid','shipped','done','canceled'])->default('new');
+            $table->enum('status', ['new','paid','shipped','processing','canceled'])->default('new');
             $table->timestamps();
         });
     }

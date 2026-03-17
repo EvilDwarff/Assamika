@@ -68,7 +68,7 @@ class OrderController extends Controller
     }
 
     // PATCH /api/admin/orders/{id}/status
-    // { status: new|processing|shipped|delivered|canceled, cancellation_reason? }
+    // { status: new|processing|shipped|paid|canceled, cancellation_reason? }
     public function updateStatus(Request $request, $id)
     {
         $order = Order::find($id);
@@ -77,7 +77,7 @@ class OrderController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'status' => 'required|string|in:new,processing,shipped,delivered,canceled',
+            'status' => 'required|string|in:new,processing,shipped,paid,canceled',
             'cancellation_reason' => 'nullable|string|max:2000',
         ]);
 

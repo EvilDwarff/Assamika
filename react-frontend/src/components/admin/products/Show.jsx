@@ -75,10 +75,10 @@ export default function Show() {
   return (
     <AdminLayout>
       <div className="p-4 md:p-8 bg-[var(--color-bg-base)] min-h-screen">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+         <div className="flex items-center justify-between mb-6 flex-nowrap">
           <h1 className="title">Товары</h1>
 
-          <Link to="/admin/products/create" className="btn btn-primary w-full sm:w-auto">
+          <Link to="/admin/products/create" className="btn uppercase border border-gray-300 bg-white hover:bg-gray-50 width:[200px] text-sm sm:text-base">
             + Добавить товар
           </Link>
         </div>
@@ -134,7 +134,7 @@ export default function Show() {
                     <th className="py-3 px-4 text-left">Товар</th>
                     <th className="py-3 px-4 text-left">Категория</th>
                     <th className="py-3 px-4 text-left">Цена</th>
-                    <th className="py-3 px-4 text-left">Скидка</th>
+                    <th className="py-3 px-4 text-left">Скидочная цена</th>
                     <th className="py-3 px-4 text-left">Остаток</th>
                     <th className="py-3 px-4 text-left">Статус</th>
                     <th className="py-3 px-4 text-center">Действия</th>
@@ -230,7 +230,7 @@ export default function Show() {
                       <div className="w-14 h-14 rounded-xl bg-gray-100 overflow-hidden flex items-center justify-center shrink-0">
                         {p.image ? (
                           <img
-                            src={`${apiUrl}/uploads/products/${p.image}`}
+                            src={`${apiPhoto}/${p.image}`}
                             alt={p.name}
                             className="w-full h-full object-cover"
                           />
@@ -258,10 +258,10 @@ export default function Show() {
                         </div>
 
                         <div className="flex gap-2 mt-3">
-                          <Link to={`/admin/products/edit/${p.id}`} className="btn btn-primary w-full">
+                          <Link to={`/admin/products/edit/${p.id}`} className="btn btn-primary ">
                             Редактировать
                           </Link>
-                          <button onClick={() => deleteProduct(p.id)} className="btn w-full border border-gray-300">
+                          <button onClick={() => deleteProduct(p.id)} className="btn  border border-gray-300">
                             Удалить
                           </button>
                         </div>

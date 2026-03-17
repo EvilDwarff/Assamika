@@ -51,7 +51,7 @@ const ShowCategory = () => {
                     <h1 className="title mb-3 sm:mb-0">Категории</h1>
                     <Link
                         to="/admin/categories/create"
-                        className="btn btn-primary text-sm sm:text-base"
+                        className="btn uppercase border border-gray-300 bg-white hover:bg-gray-50 width:[200px] text-sm sm:text-base"
                     >
                         + Добавить категорию
                     </Link>

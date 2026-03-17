@@ -21,14 +21,14 @@ const mapStatus = (s) => {
     new: "Новый",
     processing: "В обработке",
     shipped: "В пути",
-    delivered: "Доставлен",
+    paid: "Оплачен",
     canceled: "Отменён",
   };
   return m[s] || s || "-";
 };
 
 const statusPillClass = (s) => {
-  if (s === "delivered") return "bg-green-100 text-green-700 border-green-200";
+  if (s === "paid") return "bg-green-100 text-green-700 border-green-200";
   if (s === "shipped") return "bg-blue-100 text-blue-700 border-blue-200";
   if (s === "processing") return "bg-yellow-100 text-yellow-800 border-yellow-200";
   if (s === "canceled") return "bg-red-100 text-red-700 border-red-200";
@@ -135,9 +135,9 @@ const AdminOrdersPage = () => {
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
             <div className="flex items-center justify-between gap-4">
-              <h1 className="title">Заказы (админ)</h1>
+              <h1 className="title">Заказы</h1>
 
-              <button
+              {/* <button
                 onClick={() => navigate(-1)}
                 className="btn btn-primary hidden md:block uppercase"
               >
@@ -149,7 +149,7 @@ const AdminOrdersPage = () => {
                 className="md:hidden text-[var(--color-text)]"
               >
                 ← Назад
-              </button>
+              </button> */}
             </div>
 
             {/* Filters */}
@@ -182,7 +182,7 @@ const AdminOrdersPage = () => {
                   <option value="new">Новый</option>
                   <option value="processing">В обработке</option>
                   <option value="shipped">В пути</option>
-                  <option value="delivered">Доставлен</option>
+                  <option value="paid">Оплачен</option>
                   <option value="canceled">Отменён</option>
                 </select>
               </div>

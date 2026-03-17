@@ -22,7 +22,7 @@ const mapStatus = (s) => {
     new: "Новый",
     processing: "В обработке",
     shipped: "В пути",
-    delivered: "Доставлен",
+    paid: "Оплачен",
     canceled: "Отменён",
   };
   return m[s] || s || "-";
