@@ -162,7 +162,7 @@ const AdminOrdersPage = () => {
                   onKeyDown={(e) => {
                     if (e.key === "Enter") applySearch();
                   }}
-                  placeholder="ID / имя / email / телефон"
+                  placeholder="ID / имя / email"
                   className="shadow appearance-none border w-full py-2 px-3 leading-tight
                     focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]
                     bg-white text-[var(--color-text)] border-gray-300"

@@ -381,7 +381,7 @@ const RfmDashboard = () => {
                           <th className="p-3 border text-center">M</th>
                           <th className="p-3 border text-right">Заказы</th>
                           <th className="p-3 border text-right">Сумма</th>
-                          <th className="p-3 border">Действия</th>
+                        
                         </tr>
                       </thead>
                       <tbody>
@@ -425,14 +425,7 @@ const RfmDashboard = () => {
                                 <td className="p-3 border text-right font-medium">
                                   {fmtMoney(user.orders_sum_grand_total || user.total_spent || 0)}
                                 </td>
-                                <td className="p-3 border text-center">
-                                  <button
-                                    className="text-[var(--color-primary)] hover:underline text-sm"
-                                    onClick={() => navigate(`/admin/users/${user.id}`)}
-                                  >
-                                    Профиль
-                                  </button>
-                                </td>
+                             
                               </tr>
                             );
                           })
