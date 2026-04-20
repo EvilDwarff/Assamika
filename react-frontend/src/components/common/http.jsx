@@ -1,5 +1,5 @@
-export const apiUrl = 'http://localhost:8000/api'
-export const apiPhoto = 'http://localhost:8000/uploads/products'
+export const apiUrl = 'http://localhost/api'
+export const apiPhoto = 'http://localhost/uploads/products'
 
 export const adminToken = () => {
     const data = localStorage.getItem('adminInfo')
