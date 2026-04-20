@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { apiUrl, userToken } from '@components/common/http';
+import { refreshCartBadge } from '@components/common/Header';
 
 const ProductCard = ({
   id,
@@ -52,6 +53,7 @@ const ProductCard = ({
         body: JSON.stringify({ product_id: Number(id), qty: 1 }),
       });
 
+      refreshCartBadge(); // Обновляем бейдж корзины
       const data = await res.json();
 
       if (!res.ok) {
@@ -106,7 +108,7 @@ const ProductCard = ({
               <span>{price} ₽</span>
             )}
 
-            {weight && <span className="text-xs text-gray-500">{weight}</span>}
+            {/* {weight && <span className="text-xs text-gray-500">{weight}</span>} */}
           </div>
 
           {/* Кнопка + */}

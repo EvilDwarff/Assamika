@@ -17,7 +17,6 @@ class ProductController extends Controller
 
         $q = Product::query()
             ->with(['category', 'images'])
-            // ✅ не отдаём inactive
             ->whereIn('status', ['in_stock', 'sold_out']);
 
         // фильтр по категориям
@@ -60,11 +59,26 @@ class ProductController extends Controller
         ]);
     }
 
+    public function newest()
+{
+    $products = Product::query()
+        ->with(['category', 'images'])
+        ->whereIn('status', ['in_stock', 'sold_out'])
+        ->orderBy('created_at', 'desc')
+        ->limit(4)
+        ->get();
+
+    return response()->json([
+        'status' => 200,
+        'data' => $products
+    ]);
+}
+
     // GET /api/products/{id}
     public function show($id)
     {
         $product = Product::with(['category', 'images'])
-            ->whereIn('status', ['in_stock', 'sold_out']) // ✅ inactive не показываем
+            ->whereIn('status', ['in_stock', 'sold_out']) 
             ->find($id);
 
         if (!$product) {

@@ -23,6 +23,14 @@ class CartController extends Controller
         ]);
     }
 
+    public function getQuantity()
+    {
+        $user = auth()->user();
+        $quantity = $user->cart->items()->sum('qty'); 
+        
+        return response()->json(['quantity' => $quantity]);
+    }
+
     // POST /api/cart/items  {product_id, qty}
     public function addItem(Request $request)
     {

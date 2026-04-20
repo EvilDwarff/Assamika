@@ -3,6 +3,7 @@ import Layout from "./common/Layout";
 import { apiUrl, apiPhoto, userToken } from "@components/common/http";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { refreshCartBadge } from '@components/common/Header';
 
 const money = (v) => {
   const n = Number(v);
@@ -95,6 +96,8 @@ const CartPage = () => {
         body: JSON.stringify({ qty: Number(newQty) }),
       });
 
+
+      refreshCartBadge(); // Обновляем бейдж корзины
       const data = await res.json();
       if (!res.ok) throw new Error(data?.message || "Не удалось обновить количество");
 
@@ -119,6 +122,7 @@ const CartPage = () => {
         headers,
       });
 
+      refreshCartBadge(); // Обновляем бейдж корзины
       const data = await res.json();
       if (!res.ok) throw new Error(data?.message || "Не удалось удалить");
 

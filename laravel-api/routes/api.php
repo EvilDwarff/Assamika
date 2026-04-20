@@ -1,17 +1,18 @@
 <?php
 
 //use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AuthController;
-use App\Http\Controllers\front\CartController;
-use App\Http\Controllers\admin\ProductController;
-use App\Http\Controllers\front\AccountController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\RfmReportController;
 use App\Http\Controllers\admin\TempImageController;
-use App\Http\Controllers\front\ProductController as FrontProductController;
+use App\Http\Controllers\front\AccountController;
+use App\Http\Controllers\front\CartController;
 use App\Http\Controllers\front\CategoryController as FrontCategoryController;
 use App\Http\Controllers\front\OrderController as FrontOrderController;
-use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\front\ProductController as FrontProductController;
+use Illuminate\Support\Facades\Route;
 
 
 
@@ -24,6 +25,7 @@ Route::post('login',[AccountController::class, 'authenticate']);
 
 Route::get('/categories', [FrontCategoryController::class, 'index']);
 Route::get('/products', [FrontProductController::class, 'index']);
+Route::get('/products/newest', [FrontProductController::class, 'newest']);
 Route::get('/products/{id}', [FrontProductController::class, 'show']);
 
 Route::middleware(['auth:sanctum', 'checkUserRole'])->group(function () {
@@ -35,6 +37,7 @@ Route::middleware(['auth:sanctum', 'checkUserRole'])->group(function () {
 
     // cart
     Route::get('/cart', [CartController::class, 'index']);
+    Route::get('/cart/quantity', [CartController::class, 'getQuantity']);
     Route::post('/cart/items', [CartController::class, 'addItem']);
     Route::put('/cart/items/{itemId}', [CartController::class, 'updateItem']);
     Route::delete('/cart/items/{itemId}', [CartController::class, 'removeItem']);
@@ -78,6 +81,30 @@ Route::group(['middleware' => ['auth:sanctum', 'checkAdminRole']], function () {
     Route::get('/orders/{id}', [AdminOrderController::class, 'show']);
     Route::patch('/orders/{id}/status', [AdminOrderController::class, 'updateStatus']);
 
+
+     // === RFM Analytics ===
+    Route::prefix('rfm')->group(function () {
+        // Сводная аналитика
+        Route::get('/summary', [RfmReportController::class, 'summary'])->name('admin.rfm.summary');
+        
+        // Пользователи с РФМ (пагинация)
+        Route::get('/users', [RfmReportController::class, 'usersWithRfm'])->name('admin.rfm.users');
+        
+        // Топ-чемпионы
+        Route::get('/top-champions', [RfmReportController::class, 'topChampions'])->name('admin.rfm.champions');
+        
+        // Под угрозой оттока
+        Route::get('/at-risk', [RfmReportController::class, 'atRiskCustomers'])->name('admin.rfm.at-risk');
+        
+        // Детали по конкретному сегменту (опционально)
+        Route::get('/segment/{segment}', [RfmReportController::class, 'bySegment'])->name('admin.rfm.segment');
+
+
+
+         // === Пересчёт (только запись) ===
+    Route::post('/recalculate', [RfmReportController::class, 'recalculate'])->name('admin.rfm.recalculate');
+    });
+    
     
     });
 });

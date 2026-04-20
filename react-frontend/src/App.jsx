@@ -24,7 +24,7 @@ const CreateProduct = lazy(() => import("@components/admin/products/Create"));
 const EditProduct = lazy(() => import("@components/admin/products/Edit"));
 const AdminOrdersPage = lazy(() => import("@components/admin/orders/AdminOrdersPage"));
 const AdminOrderDetailsPage = lazy(() => import("@components/admin/orders/AdminOrderDetailsPage"));
-
+const RfmDashboard = lazy(() => import("@components/admin/rfm/RfmDashboard"));
 
 
 function App() {
@@ -220,6 +220,27 @@ function App() {
               </AdminRequireAuth>
             }
           />
+
+
+
+          {/* ===  RFM Analytics === */}
+          <Route
+            path="/admin/rfm"
+            element={
+              <AdminRequireAuth>
+                <Suspense
+                  fallback={
+                    <div className="sm:my-10 lg:my-20 text-center">
+                      Загрузка...
+                    </div>
+                  }
+                >
+                  <RfmDashboard />
+                </Suspense>
+              </AdminRequireAuth>
+            }
+          />
+
 
         </Routes>
       </BrowserRouter>

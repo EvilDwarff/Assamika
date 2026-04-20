@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Layout from "./common/Layout";
 import NewArrivals from "./common/NewArrivals";
 import { apiUrl, apiPhoto, userToken } from "@components/common/http";
+import { refreshCartBadge } from '@components/common/Header';
 
 const money = (v) => {
   const n = Number(v);
@@ -199,7 +200,7 @@ const ProductPage = () => {
       setInCart(true);
       setQuantity(Number(found?.qty || qty));
       setCartItemId(found?.id || null);
-
+      refreshCartBadge();
       showToast("success", "Товар добавлен в корзину");
     } catch (e) {
       showToast("error", e.message || "Ошибка");
@@ -235,6 +236,7 @@ const ProductPage = () => {
       const found = items.find((it) => Number(it?.product?.id) === Number(id));
 
       setQuantity(Number(found?.qty || newQty));
+      refreshCartBadge();
       showToast("success", "Количество обновлено");
     } catch (e) {
       showToast("error", e.message || "Ошибка");
@@ -261,6 +263,7 @@ const ProductPage = () => {
       setInCart(false);
       setQuantity(1);
       setCartItemId(null);
+      refreshCartBadge();
       showToast("success", "Товар удалён из корзины");
     } catch (e) {
       showToast("error", e.message || "Ошибка");

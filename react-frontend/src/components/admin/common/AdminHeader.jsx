@@ -11,13 +11,13 @@ export default function AdminHeader() {
         { name: 'КАТЕГОРИИ', href: '/admin/categories' },
         { name: 'ТОВАРЫ', href: '/admin/products' },
         { name: 'ЗАКАЗЫ', href: '/admin/orders' },
-        { name: 'ПОЛЬЗОВАТЕЛИ', href: '/admin/users' },
+        { name: 'RFM Analytics', href: '/admin/rfm' },
     ]
 
     return (
         <header className="bg-bg-block sticky top-0 left-0 w-full z-50 shadow-md">
             <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                <Link to="/admin/dashboard">
+                <Link to="/admin/rfm">
                     <div className="flex items-center space-x-3">
                         <span className="text-xl font-prosto text-text">ADMIN</span>
                     </div>
