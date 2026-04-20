@@ -351,7 +351,7 @@ const RfmDashboard = () => {
 
                   {/* Top RFM Segments */}
                   <div className="bg-white border border-[var(--color-border-light)] p-5 rounded-lg">
-                    <h3 className="font-semibold text-lg mb-4">🔝 Топ-5 сегментов по количеству</h3>
+                    <h3 className="font-semibold text-lg mb-4">Топ-5 сегментов по количеству</h3>
                     <div className="flex flex-wrap gap-2">
                       {summary.top_segments?.map((seg, idx) => {
                         const info = getSegmentInfo(seg.rfm_segment);
