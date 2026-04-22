@@ -57,7 +57,7 @@ const NewArrivals = () => {
 
     return (
        
-            <section className="py-12 md:py-20">
+            <section id="news" className="py-12 md:py-20">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <h1 className="title text-center mb-6 md:mb-8">Новинки</h1>
                     

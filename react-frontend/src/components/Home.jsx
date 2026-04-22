@@ -9,30 +9,29 @@ import Suppliers from "./common/Suppliers";
 import Layout from "./common/Layout";
 
 const Home = () => {
-    const location = useLocation();
+useEffect(() => {
+    const hash = location.hash;
+    if (!hash) return;
 
-    useEffect(() => {
-        const scrollToAnchor = () => {
-            const { hash } = location;
-            if (hash) {
-                const element = document.querySelector(hash);
-                if (element) {
-                    requestAnimationFrame(() => {
-                        requestAnimationFrame(() => {
-                            element.scrollIntoView({ behavior: "smooth" });
-                            window.history.replaceState(
-                                null,
-                                "",
-                                window.location.pathname + window.location.search
-                            );
-                        });
-                    });
-                }
-            }
-        };
+    // Функция для попытки скролла
+    const tryScroll = (retries = 5) => {
+        const element = document.querySelector(hash);
+        
+        if (element) {
+            // Элемент найден — скроллим
+            setTimeout(() => {
+                element.scrollIntoView({ behavior: "smooth" });
+                window.history.replaceState(null, "", window.location.pathname + window.location.search);
+            }, 100);
+        } else if (retries > 0) {
+            // Если элемента еще нет (React не отрисовал), пробуем снова через 100мс
+            setTimeout(() => tryScroll(retries - 1), 100);
+        }
+    };
 
-        scrollToAnchor();
-    }, [location]);
+    tryScroll();
+}, [location]);
+
 
 
 
