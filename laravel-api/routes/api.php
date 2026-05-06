@@ -3,7 +3,7 @@
 //use Illuminate\Http\Request;
 use App\Http\Controllers\admin\AuthController;
 use App\Http\Controllers\admin\CategoryController;
-use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\admin\OrderController as AdminOrderController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\RfmReportController;
 use App\Http\Controllers\admin\TempImageController;
